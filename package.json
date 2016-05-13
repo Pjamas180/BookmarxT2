@@ -1,0 +1,28 @@
+{
+  "name": "bookmarx",
+  "version": "1.0.0",
+  "description": "Bookmarx allows a user to add, delete, modify and share their URL bookmarks! Designed for Norman Powell's CSE 136 Enterprise Applications class.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pjamas180/BookmarxT2.git"
+  },
+  "author": "CSE 136 Team 2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pjamas180/BookmarxT2/issues"
+  },
+  "homepage": "https://github.com/Pjamas180/BookmarxT2#readme",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "bookshelf": "0.5",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "mysql": "^2.10.2",
+    "path": "^0.12.7"
+  }
+}
