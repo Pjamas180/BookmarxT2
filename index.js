@@ -2,8 +2,9 @@
 
 // var config = require('./config');
 var db = require('./db');
-// var books = require('./books');
-// var users = require('./users');
+
+// For Routes
+var routes = require('./routers/routes');
 
 db.init();
 
@@ -28,9 +29,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Routes - consider putting in routes.js */
 app.get('/', function(req, res) {
-  res.render('assignment2');
+	res.render('assignment2');
 });
-//assignment2);
+
+app.get('/add', routes.add);
+
+app.get('/edit', routes.edit);
+
+app.get('/delete', routes.delete);
+
+app.get('/folder', routes.folder);
+
 //app.post('/login', users.login);
 //app.get('/logout', users.logout);
 
