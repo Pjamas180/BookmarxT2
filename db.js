@@ -1,6 +1,6 @@
 var Bookshelf = require('bookshelf');
 var mysql      = require('mysql');
-// var config = require('./config');
+var config = require('./config');
 
 var MySQL = function() {
     var connection;
@@ -8,10 +8,14 @@ var MySQL = function() {
     return {
         init: function(){
             MySQL.connection = mysql.createConnection({
-                host     : 'l3855uft9zao23e2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-                user     : 'kak7ysodj7sx4lvn',
-                password : 'kacu3njlcyjufvb9',
-                database : 'ifevrxznxvctquex'
+                //host     : 'l3855uft9zao23e2.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+                //user     : 'kak7ysodj7sx4lvn',
+                //password : 'kacu3njlcyjufvb9',
+                //database : 'ifevrxznxvctquex'
+                host     : config.DATABASE_HOST,
+                user     : config.DATABASE_USER,
+                password : config.DATABASE_PASSWORD,
+                database : config.DATABASE_NAME
             });
          
             MySQL.connection.connect(function(err){

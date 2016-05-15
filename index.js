@@ -28,16 +28,15 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Routes - consider putting in routes.js */
-app.get('/', function(req, res) {
-	res.render('assignment2');
-});
+app.get('/', routes.list);
 
 app.get('/add', routes.add);
-
-app.get('/edit', routes.edit);
-
-app.get('/delete', routes.delete);
-
+app.post('/insert', routes.insert);
+app.get('/edit/:bookmark_id(\\d+)', routes.edit);
+//app.get('/delete', routes.delete);
+app.get('/confirmdelete/:bookmark_id(\\d+)', routes.confirmdelete);
+app.get('/delete/:bookmark_id(\\d+)', routes.delete);
+app.post('/update/:bookmark_id(\\d+)', routes.update);
 app.get('/folder', routes.folder);
 
 //app.post('/login', users.login);

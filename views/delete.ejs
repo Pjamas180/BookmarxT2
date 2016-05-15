@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
 	<title>Delete a Bookmark</title>
 </head>
 <body>
   <div class="container">
 	    <h2>Bookmarx</h2>
 	    <p><b>Are you sure you want to delete this Bookmark?</b></p>
-	    <p>Title :<i>Title of the selected bookmark in the previous page</i></p>
-	    <p>URL :<i>URL of the selected bookmark</i></p>
-	    <p>Keywords :<i>Keywords of the selected bookmark</i></p>
-    		<form id="delete-button-wrapper" style ="overflow:auto;"action="perform_delete.php" method="post">
+	    <p>Title :<i><%= book.title %></i></p>
+	    <p>URL :<i><%= book.url %></i></p>
+	    <p>Keywords :<i><%= book.tags %></i></p>
+    		<form id="delete-button-wrapper" style ="overflow:auto;"action="/delete/<%= book.bookmark_id %>">
 					<button class="btn-form" type = "submit" id="confirm_delete">Delete</button>
 					<button class="btn-form" type = "button" id="cancel_delete" onClick="location.href='/'" style="float:right">CANCEL</button>
 		</form>

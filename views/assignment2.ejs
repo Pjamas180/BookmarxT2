@@ -21,78 +21,23 @@
 			<div onClick="location.href='/add'" class="add-folder"><p>Add bookmark</p></div>
 			<h2>My List</h2>
 			<table>
-				<tr>
-					<td style="width:110px">
-						<a href="">Facebook</a>
-					</td>
-
-					<td class = "icon pencil">
-						<a href="/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					</td>
-					<td class = "icon trash">
-						<a href="/delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-					</td>
-					<td class="icon star">
-						<i class="fa fa-star filled" aria-hidden="true"></i>
-					</td>
-
-				</tr>
+				<% books.forEach(function(book) { %>
+				
 				<tr>
 					<td>
-						<a href="">Google Mail</a>
+						<a href="<%= book.url %>"><%= book.title %></a>
 					</td>
 					<td class = "icon pencil">
-						<a href="/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						<a href="/edit/<%= book.bookmark_id %>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 					</td>
 					<td class = "icon trash">
-						<a href="/delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+						<a href="/confirmdelete/<%= book.bookmark_id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 					</td>
 					<td class="icon star">
 						<i class="fa fa-star-o" aria-hidden="true"></i>
 					</td>
 				</tr>
-				<tr>
-					<td>
-						<a href="">Youtube</a>
-					</td>
-					<td class = "icon pencil">
-						<a href="/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					</td>
-					<td class = "icon trash">
-						<a href="/delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-					</td>
-					<td class="icon star">
-						<i class="fa fa-star filled" aria-hidden="true"></i>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="">LinkedIn</a>
-					</td>
-					<td class = "icon pencil">
-						<a href="/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					</td>
-					<td class = "icon trash">
-						<a href="/delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-					</td>
-					<td class="icon star">
-						<i class="fa fa-star filled" aria-hidden="true"></i>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="">GitHub</a>
-					</td>
-					<td class = "icon pencil">
-						<a href="/edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-					</td>
-					<td class = "icon trash">
-						<a href="/delete"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-					</td>
-					<td class="icon star">
-						<i class="fa fa-star-o" aria-hidden="true"></i>
-					</td>
-				</tr>
+				<% }); %>
 			</table>
 			<h2>Folders <a href='/folder'><i class="fa fa-plus-square-o" aria-hidden="true"></i></a></h2>
 
@@ -132,7 +77,7 @@
 	</div>
 
 	<div class="home-container">
-
+	
 			<div class="row ">
 				<div class="nav-left col-md-8" >
 					<form id="sort-controls" action="sort.php" method="post" style="display:inline;">
@@ -166,50 +111,37 @@
 			</div>
 			<hr>
 	<div class ="container-fluid">
-
-		<div class="row">
+		<% 
+		var x = 0;
+		var row = false;
+		books.forEach(function(book) { %>
+		<% if (x == 0) { 
+			row = false;
+			%>
+			<div class="row ">
+		<% } %>
 		  <div class="col-md-4">
 				<div id="facebook" class="cards">
-				<h1>Facebook</h1>
+				<h1><%= book.title %></h1>
 				<p class="bookmark-description">
-					A way to connect with my friends, created by the homie Mark. His favorite color is obviously blue.
+					<%= book.description %>
 				</p>
-				<a style="text-decoration: none" href="#" target="_blank">
+				<a style="text-decoration: none" href="<%= book.url %>" target="_blank">
 					<div class="bookmark-button">
 						<p>Link</p>
 					</div>
 				</a>
-				<p class="tags"><span>Tags: </span>facebook, profile, social network</p>
-			</div></div>
-		  <div class="col-md-4">
-				<div id="facebook" class="cards">
-					<h1>Gmail</h1>
-					<p class="bookmark-description">
-						The is the Gmail account for my personal use. Google is pretty awesome.
-					</p>
-					<a style="text-decoration: none" href="#" target="_blank">
-						<div class="bookmark-button">
-							<p>Link</p>
-						</div>
-					</a>
-					<p class="tags"><span>Tags: </span>email, gmail, google</p>
-				</div>
-		  </div>
-		  <div class="col-md-4">
-				<div id="facebook" class="cards">
-					<h1>YouTube</h1>
-					<p class="bookmark-description">
-						Work distraction where I watch 20 minute cat videos.
-					</p>
-					<a style="text-decoration: none" href="#" target="_blank">
-						<div class="bookmark-button">
-							<p>Link</p>
-						</div>
-					</a>
-					<p class="tags"><span>Tags: </span>youtube, music, video</p>
-				</div>
-		  </div>
+				<p class="tags"><span>Tags: </span><%= book.tags %></p>
+			</div>
 		</div>
+
+		  <% x++; if(x ==3) { %>
+		</div>
+		   <% x = 0; row = true; } %>
+		   <% }); %>
+		<% if(x < 3 && row == false) { %> 
+		</div> 
+		<% } %>
 		<div class="row">
 		  <div class="col-md-4"><div id="facebook" class="cards">
 				<h1>LinkedIn</h1>
