@@ -1,8 +1,19 @@
 // Routes
 var db = require('../db');
 exports.list = function(req, res) {
-	req.param('')
-	db.query('SELECT * from bookmarks', function(err, books) {
+	var sort = req.param('sort');
+  var order = req.param('order');
+  var search = req.param('search');
+  var orderBy = "";
+  if(sort)
+  {
+    orderBy = "ORDER BY " + sort + " " + order;
+  }
+  if(search)
+  {
+    orderBy = "WHERE title LIKE '%" + search + "%'";
+  }
+	db.query('SELECT * from bookmarks ' + orderBy, function(err, books) {
     if (err) throw err;
     console.log(books);
     res.render('assignment2', {books: books} );
