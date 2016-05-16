@@ -112,11 +112,13 @@
 								Sort bookmarks by... <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li><a href="">Title</a></li>
-								<li><a href="#">Last Visit</a></li>
-								<li><a href="#">URL</a></li>
-								<li><a href="#">Create Date</a></li>
-								<li><a href="#">Stared/Unstared</a></li>
+								<li><a href="/?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/?sort=star&order=desc">Starred/Unstarred</a></li>
 							</ul>
 						</div>
 					</form>
@@ -127,12 +129,14 @@
 				</div>
 
 				<div class=" nav-right col-md-4">
+					<form action = "/" method = "get" >
 						<div class="input-group">
-										<input type="text" class="form-control fix-height" placeholder="Search for...">
+										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<button class="btn btn-default" type="button">Go!</button>
+										<input class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
+					</form>
 					</div>
 			</div>
 			<hr>
