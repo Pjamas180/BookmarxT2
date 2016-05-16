@@ -99,6 +99,11 @@ app.get('/login', function(req, res) {
 	res.render('login')
 });
 
+
+app.use(function(req,res){
+    res.status(404).render('404.ejs');
+});
+
 //app.post('/login', users.login);
 //app.get('/logout', users.logout);
 

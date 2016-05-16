@@ -19,10 +19,37 @@
 
 		<div class="folder-wrapper">
 			<div onClick="location.href='/add'" class="add-folder"><p>Add bookmark</p></div>
-			<h2>My List</h2>
+			<div class="import-export-container">
+				<p class='import-export'>
+				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
+				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+				</p>
+			</div>
+			<div class="nav-right col-md-4 sidebar-search">
+					<div class="input-group">
+							<input type="text" class="form-control fix-height" placeholder="Search for...">
+							<span class="input-group-btn">
+							<button class="btn btn-default" type="button">Go!</button>
+							</span>
+					</div>
+			</div>
+			<h2 class="my-list">My List</h2>
+			<form id="sidebar-sort-controls" action="sort.php" method="post" style="display:inline;">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle sidebar-sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort by... <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="">Title</a></li>
+						<li><a href="#">Last Visit</a></li>
+						<li><a href="#">URL</a></li>
+						<li><a href="#">Create Date</a></li>
+						<li><a href="#">Stared/Unstared</a></li>
+					</ul>
+				</div>
+			</form>
 			<table>
 				<% books.forEach(function(book) { %>
-				
 				<tr>
 					<td>
 						<a href="<%= book.url %>"><%= book.title %></a>
@@ -77,7 +104,6 @@
 	</div>
 
 	<div class="home-container">
-	
 			<div class="row ">
 				<div class="nav-left col-md-8" >
 					<form id="sort-controls" action="sort.php" method="post" style="display:inline;">
@@ -86,11 +112,13 @@
 								Sort bookmarks by... <span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu">
-								<li><a href="">Title</a></li>
-								<li><a href="#">Last Visit</a></li>
-								<li><a href="#">URL</a></li>
-								<li><a href="#">Create Date</a></li>
-								<li><a href="#">Stared/Unstared</a></li>
+								<li><a href="/?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/?sort=star&order=desc">Starred/Unstarred</a></li>
 							</ul>
 						</div>
 					</form>
@@ -101,21 +129,23 @@
 				</div>
 
 				<div class=" nav-right col-md-4">
+					<form action = "/" method = "get" >
 						<div class="input-group">
-										<input type="text" class="form-control fix-height" placeholder="Search for...">
+										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<button class="btn btn-default" type="button">Go!</button>
+										<input class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
+					</form>
 					</div>
 			</div>
 			<hr>
 	<div class ="container-fluid">
-		<% 
+		<%
 		var x = 0;
 		var row = false;
 		books.forEach(function(book) { %>
-		<% if (x == 0) { 
+		<% if (x == 0) {
 			row = false;
 			%>
 			<div class="row ">
@@ -139,8 +169,8 @@
 		</div>
 		   <% x = 0; row = true; } %>
 		   <% }); %>
-		<% if(x < 3 && row == false) { %> 
-		</div> 
+		<% if(x < 3 && row == false) { %>
+		</div>
 		<% } %>
 		<div class="row">
 		  <div class="col-md-4"><div id="facebook" class="cards">
