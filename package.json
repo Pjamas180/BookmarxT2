@@ -17,12 +17,15 @@
   },
   "homepage": "https://github.com/Pjamas180/BookmarxT2#readme",
   "dependencies": {
+    "bcrypt-nodejs": "*",
     "body-parser": "^1.15.1",
-    "bookshelf": "0.5",
+    "bookshelf": "*",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "mysql": "^2.10.2",
+    "passport": "*",
+    "passport-local": "*",
     "path": "^0.12.7"
   }
 }
