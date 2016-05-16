@@ -24,6 +24,13 @@ var mySession = session({
 
 var app = express();
 app.use(mySession);
+/*  Not overwriting default views directory of 'views' */
+app.set("port", /*process.env.PORT ||*/ 3000);
+app.set('view engine', 'ejs');
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Passport stuff
 passport.use(new LocalStrategy(function(username, password, done) {
@@ -36,7 +43,15 @@ passport.use(new LocalStrategy(function(username, password, done) {
       } else {
          user = data.toJSON();
          console.log(user);
-         if(!bcrypt.compareSync(password, user.password)) {
+         // var string = "hello";
+         // var hash = bcrypt.hashSync(string);
+         // var result2 = bcrypt.compareSync(string, hash);
+         // console.log(user.password);
+         // console.log(result2);
+         // var result3 = bcrypt.compareSync(user.password, password);
+         // console.log("result = " + result3);
+         var result = (user.password == password); // bcrypt.compareSync(password, user.password);
+         if(!result) {
          	console.log("this error again...");
             return done(null, false, {message: 'Invalid username or password'});
          } else {
@@ -50,21 +65,17 @@ passport.use(new LocalStrategy(function(username, password, done) {
 
 passport.serializeUser(function(user, done) {
 	console.log("SerializeUser called");
-  done(null, user.username);
+	console.log(user);
+  done(null, user.email);
 });
 
 passport.deserializeUser(function(username, done) {
 	console.log("DeserializeUser called");
+	console.log(username);
    new Model.User({email: username}).fetch().then(function(user) {
       done(null, user);
    });
 });
-
-/*  Not overwriting default views directory of 'views' */
-app.set("port", /*process.env.PORT ||*/ 3000);
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Routes - consider putting in routes.js */
 app.get('/', routes.signIn);

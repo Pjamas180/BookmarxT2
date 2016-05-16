@@ -19,7 +19,7 @@
   "dependencies": {
     "bcrypt-nodejs": "*",
     "body-parser": "^1.15.1",
-    "bookshelf": "*",
+    "bookshelf": "^0.5.8",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",

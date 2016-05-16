@@ -2,8 +2,53 @@
 var passport = require('passport');
 var db = require('../db');
 var bcrypt   = require('bcrypt-nodejs');
+var LocalStrategy = require('passport-local').Strategy;
 
 var Model = require('../model');
+
+/*
+// Passport stuff
+passport.use(new LocalStrategy(function(username, password, done) {
+   new Model.User({email: username}).fetch().then(function(data) {
+      var user = data;
+      console.log(username);
+      console.log(password);
+      if(user === null) {
+         return done(null, false, {message: 'Invalid username or password'});
+      } else {
+         user = data.toJSON();
+         console.log(user);
+         // var string = "hello";
+         // var hash = bcrypt.hashSync(string);
+         // var result2 = bcrypt.compareSync(string, hash);
+         // console.log(user.password);
+         // console.log(result2);
+         // var result3 = bcrypt.compareSync(user.password, password);
+         // console.log("result = " + result3);
+         var result = (user.password == password); // bcrypt.compareSync(password, user.password);
+         if(!result) {
+          console.log("this error again...");
+            return done(null, false, {message: 'Invalid username or password'});
+         } else {
+          console.log("Yup..");
+            return done(null, user);
+         }
+         
+      }
+   });
+}));
+
+passport.serializeUser(function(user, done) {
+  console.log("SerializeUser called");
+  done(null, user.username);
+});
+
+passport.deserializeUser(function(username, done) {
+  console.log("DeserializeUser called");
+   new Model.User({email: username}).fetch().then(function(user) {
+      done(null, user);
+   });
+});*/
 
 exports.list = function(req, res) {
 	req.param('')
@@ -118,8 +163,9 @@ exports.signIn = function(req, res, next) {
 };
 
 var signInPost = function(req, res, next) {
-  passport.authenticate('local', { successRedirect: '/home',
-    failureRedirect: '/'}, function(err, user, info) {
+  console.log("Entering signInPost");
+  passport.authenticate('local', /*{ successRedirect: '/home',
+    failureRedirect: '/'}, */function(err, user, info) {
       if(err) {
         console.log(err);
         // console.log(user);
@@ -130,11 +176,14 @@ var signInPost = function(req, res, next) {
         console.log("User does not exist");
         return res.render('login');
       }
+      console.log("about to call req.logIn");
       //  res.redirect('/home');
+      console.log(req.logIn);
       req.logIn(user, function(err) {
         //return res.redirect('/home');
+        console.log("Didn't get into req.logIn");
         if(err) {
-          console.log("Login Error2");
+          console.log(err);
           return res.render('login');
         } else {
           console.log("Success!");
@@ -155,9 +204,11 @@ var signUp = function(req, res, next) {
         return res.render('signup');
       }
       //  res.redirect('/home');
+      console.log("About to logIn user from sign up");
       req.logIn(user, function(err) {
         //return res.redirect('/home');
         if(err) {
+          console.log(err);
           return res.render('login');
         } else {
           console.log("Successful signup!");
@@ -173,7 +224,7 @@ exports.signUpPost = function(req, res, next) {
   console.log(user);
   var usernamePromise = null;
   usernamePromise = new Model.User({email: user.username}).fetch();
-  console.log("HERE");
+  console.log("entering signUpPost");
   return usernamePromise.then(function(model) {
     if(model) {
       res.render('login'/*, {title: 'signup', errorMessage: 'username already exists'}*/);
@@ -182,7 +233,7 @@ exports.signUpPost = function(req, res, next) {
          // MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
          //****************************************************//
          var password = user.password;
-         var hash = bcrypt.hashSync(password);
+         var hash = password; //bcrypt.hashSync(password);
          console.log("Hashed password");
          var signUpUser = new Model.User({email: user.username, password: hash});
          console.log(signUpUser);
