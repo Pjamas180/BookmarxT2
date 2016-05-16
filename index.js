@@ -42,7 +42,6 @@ app.get('/folder', routes.folder);
 
 app.use(function(req,res){
     res.status(404).render('404.ejs');
-    res.status(403).render('403.ejs');
 });
 
 //app.post('/login', users.login);
