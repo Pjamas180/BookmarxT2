@@ -219,7 +219,6 @@ exports.signIn = function(req, res, next) {
   if(req.isAuthenticated()) {
     res.redirect('/home');
   }
-  console.log("Should be here");
   res.render('login', {message: ''});
 };
 
