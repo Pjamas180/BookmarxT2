@@ -103,7 +103,7 @@ exports.edit = function(req, res, next) {
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
   
-  db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err){
+  db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err, book){
   // db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
     if (err) throw err;
     var check = "";
@@ -160,7 +160,7 @@ exports.confirmdelete = function(req, res, next) {
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
-  db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err){
+  db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err, book){
   //db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
     if (err) throw err;
     res.render('delete', {book: book[0]});
