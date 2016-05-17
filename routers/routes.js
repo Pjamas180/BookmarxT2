@@ -4,6 +4,8 @@ exports.list = function(req, res) {
 	var sort = req.param('sort');
   var order = req.param('order');
   var search = req.param('search');
+  var tag = req.param('tag');
+
   var orderBy = "";
   if(sort)
   {
@@ -12,6 +14,12 @@ exports.list = function(req, res) {
   if(search)
   {
     orderBy = "WHERE title LIKE '%" + search + "%'";
+  }
+  if(tag)
+  {
+    tag = tag.trim();
+    orderBy = "WHERE tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "'";
+    console.log(orderBy);
   }
 	db.query('SELECT * from bookmarks ' + orderBy, function(err, books) {
     if (err) throw err;
