@@ -26,7 +26,7 @@ var mySession = session({
 var app = express();
 app.use(mySession);
 /*  Not overwriting default views directory of 'views' */
-app.set("port", /*process.env.PORT ||*/ 3000);
+app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 app.use(passport.initialize());
 app.use(passport.session());
@@ -128,6 +128,6 @@ app.use(function(req,res){
 //app.post('/books/update/:book_id(\\d+)', books.update);
 //app.post('/books/insert', books.insert);
 
-app.listen(/*process.env.PORT ||*/ app.get("port"), function () {
+app.listen(app.get("port"), function () {
   console.log('App listening on port ' + /*process.env.PORT ||*/ app.get("port") + '!');
 });
