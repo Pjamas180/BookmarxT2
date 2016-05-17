@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Pjamas180/BookmarxT2#readme",
   "dependencies": {
+    "bcrypt": "^0.8.6",
     "bcrypt-nodejs": "*",
     "body-parser": "^1.15.1",
     "bookshelf": "^0.5.8",

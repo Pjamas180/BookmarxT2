@@ -15,6 +15,7 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
 var mySession = session({
   secret: 'N0deJS1sAw3some',
   resave: true,
@@ -34,46 +35,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Passport stuff
 passport.use(new LocalStrategy(function(username, password, done) {
-   new Model.User({email: username}).fetch().then(function(data) {
-      var user = data;
-      console.log(username);
-      console.log(password);
-      if(user === null) {
-         return done(null, false, {message: 'Invalid username or password'});
-      } else {
-         user = data.toJSON();
-         console.log(user);
-         // var string = "hello";
-         // var hash = bcrypt.hashSync(string);
-         // var result2 = bcrypt.compareSync(string, hash);
-         // console.log(user.password);
-         // console.log(result2);
-         // var result3 = bcrypt.compareSync(user.password, password);
-         // console.log("result = " + result3);
-         var result = (user.password == password); // bcrypt.compareSync(password, user.password);
-         if(!result) {
-         	console.log("this error again...");
-            return done(null, false, {message: 'Invalid username or password'});
-         } else {
-         	console.log("Yup..");
-            return done(null, user);
-         }
+    new Model.User({email: username}).fetch().then(function(data) {
+        var user = data;
+        if(user === null) {
+        	return done(null, false/*, {message: 'Invalid username or password'}*/);
+      	} else {
+        	user = data.toJSON();
+        	// Need to incorporate bcrypt!!
+        	if(user.password != password /*!bcrypt.compareSync(user.password, password)*/) {
+            	return done(null, false/*, {message: 'Invalid username or password'}*/);
+        	} else {
+            	return done(null, user);
+        	}
          
       }
    });
 }));
 
 passport.serializeUser(function(user, done) {
-	console.log("SerializeUser called");
-	console.log(user);
-  done(null, user.email);
+  done(null, user);
 });
 
 passport.deserializeUser(function(username, done) {
-	console.log("DeserializeUser called");
-	console.log(username);
-   new Model.User({email: username}).fetch().then(function(user) {
-      done(null, user);
+    new Model.User({email: username.email}).fetch().then(function(user) {
+        done(null, user);
    });
 });
 
@@ -95,9 +80,9 @@ app.get('/confirmdelete/:bookmark_id(\\d+)', routes.confirmdelete);
 app.get('/delete/:bookmark_id(\\d+)', routes.delete);
 app.post('/update/:bookmark_id(\\d+)', routes.update);
 app.get('/folder', routes.folder);
-app.get('/login', function(req, res) {
+/*app.get('/login', function(req, res) {
 	res.render('login')
-});
+});*/
 
 
 app.use(function(req,res){

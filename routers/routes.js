@@ -2,55 +2,15 @@
 var passport = require('passport');
 var db = require('../db');
 var bcrypt   = require('bcrypt-nodejs');
+var crypto = require('crypto');
 var LocalStrategy = require('passport-local').Strategy;
 
 var Model = require('../model');
 
-/*
-// Passport stuff
-passport.use(new LocalStrategy(function(username, password, done) {
-   new Model.User({email: username}).fetch().then(function(data) {
-      var user = data;
-      console.log(username);
-      console.log(password);
-      if(user === null) {
-         return done(null, false, {message: 'Invalid username or password'});
-      } else {
-         user = data.toJSON();
-         console.log(user);
-         // var string = "hello";
-         // var hash = bcrypt.hashSync(string);
-         // var result2 = bcrypt.compareSync(string, hash);
-         // console.log(user.password);
-         // console.log(result2);
-         // var result3 = bcrypt.compareSync(user.password, password);
-         // console.log("result = " + result3);
-         var result = (user.password == password); // bcrypt.compareSync(password, user.password);
-         if(!result) {
-          console.log("this error again...");
-            return done(null, false, {message: 'Invalid username or password'});
-         } else {
-          console.log("Yup..");
-            return done(null, user);
-         }
-         
-      }
-   });
-}));
-
-passport.serializeUser(function(user, done) {
-  console.log("SerializeUser called");
-  done(null, user.username);
-});
-
-passport.deserializeUser(function(username, done) {
-  console.log("DeserializeUser called");
-   new Model.User({email: username}).fetch().then(function(user) {
-      done(null, user);
-   });
-});*/
-
-exports.list = function(req, res) {
+exports.list = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
 	var sort = req.param('sort');
   var order = req.param('order');
   var search = req.param('search');
@@ -70,10 +30,17 @@ exports.list = function(req, res) {
   });
 	
 };
-exports.add = function(req, res) {
-	res.render('add');
+exports.add = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  } else {
+	  res.render('add');
+  }
 };
-exports.insert = function(req, res) {
+exports.insert = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var tags = db.escape(req.body.keywords);
@@ -103,7 +70,10 @@ exports.insert = function(req, res) {
     res.redirect('/home');
   });
 };
-exports.edit = function(req, res) {
+exports.edit = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
 	var id = req.params.bookmark_id;
 	id = parseInt(id);
   db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
@@ -113,7 +83,10 @@ exports.edit = function(req, res) {
     res.render('edit', {book: book[0], checked: check });
   });
 };
-exports.update = function(req, res) {
+exports.update = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var tags = db.escape(req.body.keywords);
@@ -144,27 +117,36 @@ exports.update = function(req, res) {
     res.redirect('/home');
   });
 };
-exports.confirmdelete = function(req, res) {
+exports.confirmdelete = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
   var id = req.params.bookmark_id;
   db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
     if (err) throw err;
     res.render('delete', {book: book[0]});
   });
 };
-exports.delete = function(req, res) {
+exports.delete = function(req, res, next) {
   var id = req.params.bookmark_id;
   db.query('DELETE from bookmarks WHERE bookmark_id = ' + id, function(err){
     if (err) throw err;
     res.redirect('/home');
   });
 };
-exports.folder = function(req, res) {
-	res.render('folder');
+exports.folder = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  } else {
+    res.render('folder');
+  }
 };
 
+/*
 exports.login = function(req, res) {
   res.render('assignment2');
 };
+*/
 
 exports.signIn = function(req, res, next) {
   if(req.isAuthenticated()) {
@@ -175,8 +157,8 @@ exports.signIn = function(req, res, next) {
 
 var signInPost = function(req, res, next) {
   console.log("Entering signInPost");
-  passport.authenticate('local', /*{ successRedirect: '/home',
-    failureRedirect: '/'}, */function(err, user, info) {
+  passport.authenticate('local', { successRedirect: '/home',
+    failureRedirect: '/'}, function(err, user, info) {
       if(err) {
         console.log(err);
         // console.log(user);
@@ -192,7 +174,6 @@ var signInPost = function(req, res, next) {
       console.log(req.logIn);
       req.logIn(user, function(err) {
         //return res.redirect('/home');
-        console.log("Didn't get into req.logIn");
         if(err) {
           console.log(err);
           return res.render('login');
@@ -212,6 +193,7 @@ var signUp = function(req, res, next) {
       } 
 
       if(!user) {
+        console.log("Shouldn't be going in here... Saying invalid user");
         return res.render('signup');
       }
       //  res.redirect('/home');
@@ -244,10 +226,12 @@ exports.signUpPost = function(req, res, next) {
          // MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
          //****************************************************//
          var password = user.password;
-         var hash = password; //bcrypt.hashSync(password);
-         console.log("Hashed password");
-         var signUpUser = new Model.User({email: user.username, password: hash});
-         console.log(signUpUser);
+         //console.log("wtf..");
+         //var numberOfRounds = 10;
+         //var salt = bCrypt.genSaltSync(numberOfRounds);
+         var hash = password; // bcrypt.hashSync(password);
+         //console.log("Hashed password: " + hash);
+         //console.log(signUpUser);
          //console.log(Model);
 
           date = new Date();
@@ -259,20 +243,30 @@ exports.signUpPost = function(req, res, next) {
             ('00' + date.getUTCSeconds()).slice(-2);
           //console.log(title + url + tags + description + star);
           date = "'"+ date.toString() + "'";
-          var queryString = 'INSERT INTO users (email, password, created_at) VALUES ("' + user.username + '", "' + hash + '", ' + date + ')';
+
+          var signUpUser = new Model.User({email: user.username, password: hash, created_at: date});
+
+          /*var queryString = 'INSERT INTO users (email, password, created_at) VALUES ("' + user.username + '", "' + hash + '", ' + date + ')';
           console.log(queryString);
           db.query(queryString, function(err){
             console.log(err);
+            console.log("WTWAFAFASF");
             signUp(req, res, next);
-          });
+          });*/
 
-         /*signUpUser.save().then(function(model) {
+        signUpUser.save().then(function(model) {
             console.log("Redirecting...");
             // sign in the newly registered user
             signUp(req, res, next);
-        }); */
+        });
      }
  });
+};
+
+// 404 not found
+var notFound404 = function(req, res, next) {
+  res.status(404);
+  res.render('404', {title: '404 Not Found'});
 };
 
 exports.signOut = function(req, res, next) {
@@ -284,5 +278,7 @@ exports.signOut = function(req, res, next) {
   }
 };
 
+
+module.exports.notFound404 = notFound404;
 module.exports.signInPost = signInPost;
 module.exports.signUp = signUp;
