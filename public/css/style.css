@@ -148,14 +148,14 @@ td {
 	border-radius: 2px;
 }
 
-#edit-form > button, #add-form >button, #delete-button-wrapper >button{
+#edit-form > button, #add-form >button, #delete-button-wrapper >button, .login-button{
 	margin-top: 15px;
 	border: solid 1px black;
 	background-color: white;
 	border-radius: 2px;
 }
 
-#edit-form > button:hover, #add-form >button:hover, #delete-button-wrapper >button:hover{
+#edit-form > button:hover, #add-form >button:hover, #delete-button-wrapper >button:hover, .login-button:hover{
 	cursor: pointer;
 	background-color: #43aea8;
 	color: white;
@@ -167,11 +167,25 @@ td {
 	width: 75% !important;
 }
 
+#login, #signup {
+	text-align: center;
+}
+
+.signup-link {
+	font-size: 11px;
+}
+
 /* Desktop */
 @media only screen and (min-width: 768px) {
 	body{
 		background-color:#f4f4f6 !important;
 		overflow-x: hidden;
+	}
+
+	.container {
+		width: 500px;
+		margin: 0 auto;
+		margin-top: 100px;
 	}
 
 	.home-container{
