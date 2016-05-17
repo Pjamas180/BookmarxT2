@@ -33,6 +33,29 @@ app.use(passport.session());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Nodejs encryption with CTR
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+ 
+var hw = encrypt("hello world")
+// outputs hello world
+console.log(decrypt(hw));
+
 // Passport stuff
 passport.use(new LocalStrategy(function(username, password, done) {
     new Model.User({email: username}).fetch().then(function(data) {
@@ -42,7 +65,9 @@ passport.use(new LocalStrategy(function(username, password, done) {
       	} else {
         	user = data.toJSON();
         	// Need to incorporate bcrypt!!
-        	if(user.password != password /*!bcrypt.compareSync(user.password, password)*/) {
+          var decrypted = decrypt(user.password);// bcrypt.compareSync(user.password, password);
+          var result = decrypted == password;
+        	if( !result /*user.password != password /*!bcrypt.compareSync(user.password, password)*/) {
             	return done(null, false/*, {message: 'Invalid username or password'}*/);
         	} else {
             	return done(null, user);
