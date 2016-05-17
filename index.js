@@ -26,24 +26,49 @@ var mySession = session({
 var app = express();
 app.use(mySession);
 /*  Not overwriting default views directory of 'views' */
-app.set("port", /*process.env.PORT ||*/ 3000);
+app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Nodejs encryption with CTR
+var crypto = require('crypto'),
+    algorithm = 'aes-256-ctr',
+    password = 'd6F3Efeq';
+
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,password)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+ 
+function decrypt(text){
+  var decipher = crypto.createDecipher(algorithm,password)
+  var dec = decipher.update(text,'hex','utf8')
+  dec += decipher.final('utf8');
+  return dec;
+}
+ 
+var hw = encrypt("hello world")
+// outputs hello world
+console.log(decrypt(hw));
+
 // Passport stuff
 passport.use(new LocalStrategy(function(username, password, done) {
     new Model.User({email: username}).fetch().then(function(data) {
         var user = data;
         if(user === null) {
-        	return done(null, false/*, {message: 'Invalid username or password'}*/);
+        	return done(null, false, {message: 'Invalid username or password'});
       	} else {
         	user = data.toJSON();
         	// Need to incorporate bcrypt!!
-        	if(user.password != password /*!bcrypt.compareSync(user.password, password)*/) {
-            	return done(null, false/*, {message: 'Invalid username or password'}*/);
+          var decrypted = decrypt(user.password);
+          var result = decrypted == password;
+        	if(!result) {
+            	return done(null, false, {message: 'Invalid username or password'});
         	} else {
             	return done(null, user);
         	}
@@ -103,6 +128,6 @@ app.use(function(req,res){
 //app.post('/books/update/:book_id(\\d+)', books.update);
 //app.post('/books/insert', books.insert);
 
-app.listen(/*process.env.PORT ||*/ app.get("port"), function () {
+app.listen(app.get("port"), function () {
   console.log('App listening on port ' + /*process.env.PORT ||*/ app.get("port") + '!');
 });
