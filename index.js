@@ -61,14 +61,14 @@ passport.use(new LocalStrategy(function(username, password, done) {
     new Model.User({email: username}).fetch().then(function(data) {
         var user = data;
         if(user === null) {
-        	return done(null, false/*, {message: 'Invalid username or password'}*/);
+        	return done(null, false, {message: 'Invalid username or password'});
       	} else {
         	user = data.toJSON();
         	// Need to incorporate bcrypt!!
-          var decrypted = decrypt(user.password);// bcrypt.compareSync(user.password, password);
+          var decrypted = decrypt(user.password);
           var result = decrypted == password;
-        	if( !result /*user.password != password /*!bcrypt.compareSync(user.password, password)*/) {
-            	return done(null, false/*, {message: 'Invalid username or password'}*/);
+        	if(!result) {
+            	return done(null, false, {message: 'Invalid username or password'});
         	} else {
             	return done(null, user);
         	}

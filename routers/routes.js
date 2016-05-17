@@ -219,7 +219,8 @@ exports.signIn = function(req, res, next) {
   if(req.isAuthenticated()) {
     res.redirect('/home');
   }
-  res.render('login');
+  console.log("Should be here");
+  res.render('login', {message: ''});
 };
 
 var signInPost = function(req, res, next) {
@@ -228,13 +229,12 @@ var signInPost = function(req, res, next) {
     failureRedirect: '/'}, function(err, user, info) {
       if(err) {
         console.log(err);
-        // console.log(user);
-        return res.render('login');
+        return res.render('login', {message: err});
       } 
 
       if(!user) {
         // console.log("User does not exist");
-        return res.render('login');
+        return res.render('login', {message: 'Incorrect username or password'});
       }
       // console.log("about to call req.logIn");
       //  res.redirect('/home');
@@ -243,7 +243,7 @@ var signInPost = function(req, res, next) {
         //return res.redirect('/home');
         if(err) {
           console.log(err);
-          return res.render('login');
+          return res.render('login', {message: err});
         } else {
           // console.log("Success!");
           return res.redirect('/home');
@@ -256,18 +256,18 @@ var signUp = function(req, res, next) {
   passport.authenticate('local', { successRedirect: '/home',
     failureRedirect: '/'}, function(err, user, info) {
       if(err) {
-        return res.render('login');
+        return res.render('login', {message: err});
       } 
 
       if(!user) {
-        return res.render('signup');
+        return res.render('signup', {message: ''});
       }
       //  res.redirect('/home');
       req.logIn(user, function(err) {
         //return res.redirect('/home');
         if(err) {
           console.log(err);
-          return res.render('login');
+          return res.render('login', {message: err});
         } else {
           var user = req.body;
           res.redirect('/home');//res.render('assignment2'/*, {username: user.username, signup: 'Insert your Vehicle Name and License Plate Number.'}*/);
@@ -282,7 +282,7 @@ exports.signUpPost = function(req, res, next) {
   usernamePromise = new Model.User({email: user.username}).fetch();
   return usernamePromise.then(function(model) {
     if(model) {
-      res.render('login'/*, {title: 'signup', errorMessage: 'username already exists'}*/);
+      res.render('signup', {message: 'username already exists'});
     } else {
          //****************************************************//
          // MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
