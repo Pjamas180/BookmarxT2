@@ -339,7 +339,7 @@ exports.signOut = function(req, res, next) {
   }
 };
 
-module.exports.list = list;
+//module.exports.list = list;
 module.exports.notFound404 = notFound404;
 module.exports.signInPost = signInPost;
 module.exports.signUp = signUp;
