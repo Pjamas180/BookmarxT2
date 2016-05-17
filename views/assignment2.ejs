@@ -15,7 +15,7 @@
 
 <body>
 	<div class="side-bar">
-		<h1>BookMarx</h1>
+		<h1 onClick="location.href='/'">BookMarx</h1>
 
 		<div class="folder-wrapper">
 			<div onClick="location.href='/add'" class="add-folder"><p>Add bookmark</p></div>
@@ -27,12 +27,14 @@
 				</p>
 			</div>
 			<div class="nav-right col-md-4 sidebar-search">
-					<div class="input-group">
-							<input type="text" class="form-control fix-height" placeholder="Search for...">
-							<span class="input-group-btn">
-							<button class="btn btn-default" type="button">Go!</button>
-							</span>
-					</div>
+					<form action = "/" method = "get" >
+						<div class="input-group">
+										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
+										<span class="input-group-btn">
+										<input class="btn btn-default" type="submit">Go!</button>
+										</span>
+						</div>
+					</form>
 			</div>
 			<h2 class="my-list">My List</h2>
 			<form id="sidebar-sort-controls" action="sort.php" method="post" style="display:inline;">
@@ -41,12 +43,14 @@
 						Sort by... <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li><a href="">Title</a></li>
-						<li><a href="#">Last Visit</a></li>
-						<li><a href="#">URL</a></li>
-						<li><a href="#">Create Date</a></li>
-						<li><a href="#">Stared/Unstared</a></li>
-					</ul>
+								<li><a href="/?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/?sort=star&order=desc">Starred/Unstarred</a></li>
+							</ul>
 				</div>
 			</form>
 			<table>
@@ -162,7 +166,16 @@
 						<p>Link</p>
 					</div>
 				</a>
-				<p class="tags"><span>Tags: </span><%= book.tags %></p>
+				<p class="tags"><span>Tags: </span>
+					<% var res = book.tags.split(",");
+					   var c = 0;
+						res.forEach(function(tag){
+					%>
+					<a href = "/?tag=<%= tag %>" ><%= tag %></a>
+					<% if(c < res.length-1) { %> ,
+					<% } %>
+					<% c ++;}); %>
+				</p>
 			</div>
 		</div>
 
