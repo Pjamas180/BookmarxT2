@@ -96,14 +96,11 @@ app.post('/signup', routes.signUpPost);
 
 app.get('/signout', routes.signOut);
 
-app.get('/home', routes.list);
-app.get('/add', routes.add);
-app.post('/insert', routes.insert);
-app.get('/edit/:bookmark_id(\\d+)', routes.edit);
+app.get('/api/bookmarks', routes.list);
+app.post('/api/bookmarks', routes.insert);
 //app.get('/delete', routes.delete);
-app.get('/confirmdelete/:bookmark_id(\\d+)', routes.confirmdelete);
-app.get('/delete/:bookmark_id(\\d+)', routes.delete);
-app.post('/update/:bookmark_id(\\d+)', routes.update);
+app.delete('/api/bookmarks/:bookmark_id(\\d+)', routes.delete);
+app.put('/api/bookmarks/:bookmark_id(\\d+)', routes.update);
 app.get('/folder', routes.folder);
 /*app.get('/login', function(req, res) {
 	res.render('login')

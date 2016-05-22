@@ -7,7 +7,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var Model = require('../model');
 
-exports.list = function(req, res, next) {
+var list = exports.list = function(req, res, next) {
   if(!req.isAuthenticated()) {
     notFound404(req, res, next);
   }
@@ -43,7 +43,7 @@ exports.list = function(req, res, next) {
 	// db.query('SELECT * from bookmarks ' + orderBy, function(err, books) {
     if (err) throw err;
     //console.log(books);
-    res.render('assignment2', {books: books} );
+    res.json(books);
   });
 	
 };
@@ -63,7 +63,7 @@ exports.insert = function(req, res, next) {
   var tags = db.escape(req.body.keywords);
   var description = db.escape(req.body.description);
   var star = req.body.star;
-
+  console.log("TITLE:" + title);
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
@@ -91,7 +91,7 @@ exports.insert = function(req, res, next) {
   // var queryString = 'INSERT INTO bookmarks (title, url, tags, updated_at, created_at, description, star) VALUES (' + title + ', ' + url + ', ' + tags + ', ' + date + ', ' + date + ', ' + description + ', ' + star +  ')';
   // console.log(queryString);
   db.query(queryString, function(err){
-    res.redirect('/home');
+    list(req, res);
   });
 };
 exports.edit = function(req, res, next) {
@@ -149,7 +149,7 @@ exports.update = function(req, res, next) {
   //var queryString = 'UPDATE bookmarks SET title =' + title + ', url =' + url + ', tags =' + tags + ', updated_at =' + date + ', description=' + description + ', star=' + star +  ' WHERE bookmark_id = ' + id;
   // console.log(queryString);
   db.query(queryString, function(err){
-    res.redirect('/home');
+    list(req, res);
   });
 };
 exports.confirmdelete = function(req, res, next) {
@@ -175,7 +175,8 @@ exports.delete = function(req, res, next) {
   db.query('DELETE from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err){
   //db.query('DELETE from bookmarks WHERE bookmark_id = ' + id, function(err){
     if (err) throw err;
-    res.redirect('/home');
+    //res.json({ message: 'Book Deleted' });
+    list(req, res);
   });
 };
 exports.folder = function(req, res, next) {
