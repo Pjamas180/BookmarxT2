@@ -62,10 +62,10 @@ exports.insert = function(req, res, next) {
   var url = db.escape(req.body.url);
   var tags = db.escape(req.body.keywords);
   var description = db.escape(req.body.description);
-  var star = req.body.star;
+  var star = db.escape(req.body.star);
   console.log("TITLE:" + title);
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
-  var userID = req.user.get("user_id");
+  var userID = db.escape(req.user.get("user_id"));
 
   if(star == null)
   {
@@ -119,11 +119,11 @@ exports.update = function(req, res, next) {
   var url = db.escape(req.body.url);
   var tags = db.escape(req.body.keywords);
   var description = db.escape(req.body.description);
-  var star = req.body.star;
-  var id = req.params.bookmark_id;
+  var star = db.escape(req.body.star);
+  var id = db.escape(req.params.bookmark_id);
 
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
-  var userID = req.user.get("user_id");
+  var userID = db.escape(req.user.get("user_id"));
 
   if(star == null)
   {
@@ -167,7 +167,7 @@ exports.confirmdelete = function(req, res, next) {
   });
 };
 exports.delete = function(req, res, next) {
-  var id = req.params.bookmark_id;
+  var id = db.escape(req.params.bookmark_id);
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
