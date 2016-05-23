@@ -1,5 +1,4 @@
-
-	<div class="side-bar">
+<div class="side-bar">
 		<h1 onClick="location.href='/'">BookMarx</h1>
 
 		<div class="folder-wrapper">
@@ -7,8 +6,8 @@
 			<div onClick="location.href='/signout'" class="signout"><p>Sign Out</p></div>
 			<div class="import-export-container">
 				<p class='import-export'>
-				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
 				</p>
 			</div>
 			<div class="nav-right col-md-4 sidebar-search">
@@ -16,7 +15,7 @@
 						<div class="input-group">
 										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<input class="btn btn-default" type="submit">Go!</button>
+										<button class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
 					</form>
@@ -45,11 +44,11 @@
 						<a href="<%= book.url %>"><%= book.title %></a>
 					</td>
 					<td class = "icon pencil">
-						<div id="title<%=book.bookmark_id%>" style = "display:none"><%=book.title%></div> 
-						<div id="url<%=book.bookmark_id%>" style = "display:none"><%=book.url%></div> 
-						<div id="description<%=book.bookmark_id%>" style = "display:none"><%=book.description%></div> 
-						<div id="keywords<%=book.bookmark_id%>" style = "display:none"><%=book.tags%></div> 
-						<div id="star<%=book.bookmark_id%>" style = "display:none"><%=book.star%></div> 
+						<div id="title<%=book.bookmark_id%>" style = "display:none"><%=book.title%></div>
+						<div id="url<%=book.bookmark_id%>" style = "display:none"><%=book.url%></div>
+						<div id="description<%=book.bookmark_id%>" style = "display:none"><%=book.description%></div>
+						<div id="keywords<%=book.bookmark_id%>" style = "display:none"><%=book.tags%></div>
+						<div id="star<%=book.bookmark_id%>" style = "display:none"><%=book.star%></div>
 						<a onclick="showEdit(<%= book.bookmark_id %>);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 					</td>
 					<td class = "icon trash">
@@ -70,10 +69,12 @@
 							<input type="checkbox" value="selected" id="social-folder" class="folder-input">
 							<label for="social-folder" class="social-label">Social Media</label>
 							<div role="folder" class="folder-content">
-								<li><a href='#'>Facebook</a></li>
-								<li><a href='#'>Instagram</a></li>
-								<li><a href='#'>Vine</a></li>
-								<li><a href='#'>Tumblr</a></li>
+								<ul>
+									<li><a href='#'>Facebook</a></li>
+									<li><a href='#'>Instagram</a></li>
+									<li><a href='#'>Vine</a></li>
+									<li><a href='#'>Tumblr</a></li>
+								</ul>
 							</div>
 						</div>
 					</td>
@@ -84,9 +85,11 @@
 							<input type="checkbox" value="selected" id="class-folder" class="folder-input">
 							<label for="class-folder" class="social-label">Class</label>
 							<div role="folder" class="folder-content">
-								<li> <a href=#> CSE 136<a> </li>
-								<li><a href=#>CSE 141</a> </li>
-								<li><a href=#>CSE 120</a></li>
+								<ul>
+									<li> <a href=#> CSE 136<a> </li>
+									<li><a href=#>CSE 141</a> </li>
+									<li><a href=#>CSE 120</a></li>
+								</ul>
 							</div>
 						</div>
 					</td>
@@ -118,8 +121,8 @@
 						</div>
 					</form>
 					<p class='import-export'>
-					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
 					</p>
 				</div>
 
@@ -128,7 +131,7 @@
 						<div class="input-group">
 										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<input class="btn btn-default" type="submit">Go!</button>
+										<button class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
 					</form>
@@ -151,10 +154,8 @@
 				<p class="bookmark-description">
 					<%= book.description %>
 				</p>
-				<a style="text-decoration: none" href="<%= book.url %>" target="_blank">
-					<div class="bookmark-button">
-						<p>Link</p>
-					</div>
+				<a class="bookmark-button" style="text-decoration: none" href="<%= book.url %>" target="_blank">
+					<p>Link</p>
 				</a>
 				<p class="tags"><span>Tags: </span>
 					<% var res = book.tags.split(",");
@@ -176,7 +177,4 @@
 		<% if(x < 3 && row == false) { %>
 		</div>
 		<% } %>
-		
-		</div>
-
-	</div>
+</div>
