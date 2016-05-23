@@ -187,16 +187,10 @@ exports.folder = function(req, res, next) {
   }
 };
 
-/*
-exports.login = function(req, res) {
-  res.render('assignment2');
-};
-*/
-
 // Nodejs encryption with CTR
 var crypto = require('crypto'),
     algorithm = 'aes-256-ctr',
-    password = 'd6F3Efeq';
+    password = 'DPSSNBookmarxT2';
 
 function encrypt(text){
   var cipher = crypto.createCipher(algorithm,password)
@@ -205,48 +199,46 @@ function encrypt(text){
   return crypted;
 }
  
-function decrypt(text){
+/*function decrypt(text){
   var decipher = crypto.createDecipher(algorithm,password)
   var dec = decipher.update(text,'hex','utf8')
   dec += decipher.final('utf8');
   return dec;
-}
- 
-var hw = encrypt("hello world")
-// outputs hello world
-console.log(decrypt(hw));
+}*/
 
 exports.signIn = function(req, res, next) {
   if(req.isAuthenticated()) {
-    res.redirect('/home');
+    res.redirect('/bookmarks');
   }
   res.render('login', {message: ''});
 };
 
 var signInPost = function(req, res, next) {
-  // console.log("Entering signInPost");
-  passport.authenticate('local', { successRedirect: '/home',
+  /* Make sure username is in valid email format */
+  var user = req.body;
+  var validatedEmail = validateEmail(user.username);
+  if(!validatedEmail) {
+    return res.render('login', {message: 'Please provide a valid email address! (ex. example@example.com'});
+  }
+  /* Use passport to authenticate user */
+  passport.authenticate('local', { successRedirect: '/bookmarks',
     failureRedirect: '/'}, function(err, user, info) {
       if(err) {
         console.log(err);
         return res.render('login', {message: err});
       } 
 
+      /* User does not exist in database */
       if(!user) {
-        // console.log("User does not exist");
-        return res.render('login', {message: 'Incorrect username or password'});
+        return res.render('login', {message: 'Invalid username or password'});
       }
-      // console.log("about to call req.logIn");
-      //  res.redirect('/home');
-      // console.log(req.logIn);
+
       req.logIn(user, function(err) {
-        //return res.redirect('/home');
         if(err) {
           console.log(err);
           return res.render('login', {message: err});
         } else {
-          // console.log("Success!");
-          return res.redirect('/home');
+          return res.redirect('/bookmarks');
         }
       });
     })(req, res, next);
@@ -257,20 +249,18 @@ var signUp = function(req, res, next) {
     failureRedirect: '/'}, function(err, user, info) {
       if(err) {
         return res.render('login', {message: err});
-      } 
+      }
 
       if(!user) {
         return res.render('signup', {message: ''});
       }
-      //  res.redirect('/home');
       req.logIn(user, function(err) {
-        //return res.redirect('/home');
         if(err) {
           console.log(err);
           return res.render('login', {message: err});
         } else {
           var user = req.body;
-          res.redirect('/home');//res.render('assignment2'/*, {username: user.username, signup: 'Insert your Vehicle Name and License Plate Number.'}*/);
+          res.redirect('/bookmarks');
         }
       });
     })(req, res, next);
@@ -278,23 +268,23 @@ var signUp = function(req, res, next) {
 
 exports.signUpPost = function(req, res, next) {
   var user = req.body;
+  /* Make sure username is in valid email format */
+  var validatedEmail = validateEmail(user.username);
+  if(!validatedEmail) {
+    return res.render('signup', {message: 'Please provide a valid email address! (ex. example@example.com'});
+  }
+
   var usernamePromise = null;
   usernamePromise = new Model.User({email: user.username}).fetch();
   return usernamePromise.then(function(model) {
     if(model) {
-      res.render('signup', {message: 'username already exists'});
+      res.render('signup', {message: 'Username already exists'});
     } else {
          //****************************************************//
          // MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
          //****************************************************//
          var password = user.password;
-         //console.log("wtf..");
-         //var numberOfRounds = 10;
-         //var salt = bCrypt.genSaltSync(numberOfRounds);
          var hash = encrypt(password);
-         //console.log("Hashed password: " + hash);
-         //console.log(signUpUser);
-         //console.log(Model);
 
           date = new Date();
           date = date.getUTCFullYear() + '-' +
@@ -303,7 +293,6 @@ exports.signUpPost = function(req, res, next) {
             ('00' + date.getUTCHours()).slice(-2) + ':' + 
             ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
             ('00' + date.getUTCSeconds()).slice(-2);
-          //console.log(title + url + tags + description + star);
           date = "'"+ date.toString() + "'";
 
           var signUpUser = new Model.User({email: user.username, password: hash, created_at: date});
@@ -339,7 +328,12 @@ exports.signOut = function(req, res, next) {
   }
 };
 
-//module.exports.list = list;
+/* Checks with regular expressions if the email is valid */
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
 module.exports.notFound404 = notFound404;
 module.exports.signInPost = signInPost;
 module.exports.signUp = signUp;
