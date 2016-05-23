@@ -1,16 +1,15 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+			<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-	<title>architecture</title>
+	<title>BookMarx</title>
 </head>
 
 <body>
@@ -22,8 +21,8 @@
 			<div onClick="location.href='/signout'" class="signout"><p>Sign Out</p></div>
 			<div class="import-export-container">
 				<p class='import-export'>
-				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
 				</p>
 			</div>
 			<div class="nav-right col-md-4 sidebar-search">
@@ -31,7 +30,7 @@
 						<div class="input-group">
 										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<input class="btn btn-default" type="submit">Go!</button>
+										<button class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
 					</form>
@@ -60,11 +59,11 @@
 						<a href="<%= book.url %>"><%= book.title %></a>
 					</td>
 					<td class = "icon pencil">
-						<div id="title<%=book.id%>" style = "display:none"></div> 
-						<div id="url<%=book.id%>" style = "display:none"></div> 
-						<div id="description<%=book.id%>" style = "display:none"></div> 
-						<div id="keywords<%=book.id%>" style = "display:none"></div> 
-						<div id="star<%=book.id%>" style = "display:none"></div> 
+						<div id="title<%=book.id%>" style = "display:none"></div>
+						<div id="url<%=book.id%>" style = "display:none"></div>
+						<div id="description<%=book.id%>" style = "display:none"></div>
+						<div id="keywords<%=book.id%>" style = "display:none"></div>
+						<div id="star<%=book.id%>" style = "display:none"></div>
 						<a href="/edit/<%= book.bookmark_id %>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 					</td>
 					<td class = "icon trash">
@@ -85,10 +84,12 @@
 							<input type="checkbox" value="selected" id="social-folder" class="folder-input">
 							<label for="social-folder" class="social-label">Social Media</label>
 							<div role="folder" class="folder-content">
-								<li><a href='#'>Facebook</a></li>
-								<li><a href='#'>Instagram</a></li>
-								<li><a href='#'>Vine</a></li>
-								<li><a href='#'>Tumblr</a></li>
+								<ul>
+									<li><a href='#'>Facebook</a></li>
+									<li><a href='#'>Instagram</a></li>
+									<li><a href='#'>Vine</a></li>
+									<li><a href='#'>Tumblr</a></li>
+								</ul>
 							</div>
 						</div>
 					</td>
@@ -99,9 +100,11 @@
 							<input type="checkbox" value="selected" id="class-folder" class="folder-input">
 							<label for="class-folder" class="social-label">Class</label>
 							<div role="folder" class="folder-content">
-								<li> <a href=#> CSE 136<a> </li>
-								<li><a href=#>CSE 141</a> </li>
-								<li><a href=#>CSE 120</a></li>
+								<ul>
+									<li> <a href=#> CSE 136<a> </li>
+									<li><a href=#>CSE 141</a> </li>
+									<li><a href=#>CSE 120</a></li>
+								</ul>
 							</div>
 						</div>
 					</td>
@@ -133,8 +136,8 @@
 						</div>
 					</form>
 					<p class='import-export'>
-					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
 					</p>
 				</div>
 
@@ -143,7 +146,7 @@
 						<div class="input-group">
 										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
 										<span class="input-group-btn">
-										<input class="btn btn-default" type="submit">Go!</button>
+										<button class="btn btn-default" type="submit">Go!</button>
 										</span>
 						</div>
 					</form>
@@ -161,15 +164,13 @@
 			<div class="row ">
 		<% } %>
 		  <div class="col-md-4">
-				<div id="facebook" class="cards">
+				<div class="cards">
 				<h1><%= book.title %></h1>
 				<p class="bookmark-description">
 					<%= book.description %>
 				</p>
-				<a style="text-decoration: none" href="<%= book.url %>" target="_blank">
-					<div class="bookmark-button">
-						<p>Link</p>
-					</div>
+				<a class="bookmark-button" style="text-decoration: none" href="<%= book.url %>" target="_blank">
+					Link
 				</a>
 				<p class="tags"><span>Tags: </span>
 					<% var res = book.tags.split(",");
@@ -192,38 +193,29 @@
 		</div>
 		<% } %>
 		<div class="row">
-		  <div class="col-md-4"><div id="facebook" class="cards">
+		  <div class="col-md-4"><div class="cards">
 				<h1>LinkedIn</h1>
 				<p class="bookmark-description">
 					Social media for professional use. Wish I had those 500+ connections.
 				</p>
-				<a style="text-decoration: none" href="#" target="_blank">
-					<div class="bookmark-button">
-						<p>Link</p>
-					</div>
+				<a class="bookmark-button" style="text-decoration: none" href="#" target="_blank">
+					Link
 				</a>
 				<p class="tags"><span>Tags: </span>linkedin, professional, get me a job</p>
 			</div></div>
 		  <div class="col-md-4">
-				<div id="facebook" class="cards">
+				<div class="cards">
 					<h1>GitHub</h1>
 					<p class="bookmark-description">
 						Where this project is hosted!!!
 					</p>
-					<a style="text-decoration: none" href="#" target="_blank">
-						<div class="bookmark-button">
-							<p>Link</p>
-						</div>
+					<a class="bookmark-button" style="text-decoration: none" href="#" target="_blank">
+						Link
 					</a>
 					<p class="tags"><span>Tags: </span>code, open source, git</p>
 				</div>
 		  </div>
-
 		</div>
-
-	</div>
-
 	</div>
 </body>
-
 </html>
