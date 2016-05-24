@@ -3,6 +3,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script src="css/dist/sweetalert.min.js"></script> 
+	<link rel="stylesheet" type="text/css" href="css/dist/sweetalert.css">
 	<title>Bookmarx</title>
 </head>
 <body>
@@ -13,7 +15,11 @@
 		        <tr><td>Username: </td><td><input class="input-option" type="text" name="username"  value="" placeholder="Username" ></td></tr>
 		        <tr><td>Password: </td><td><input class="input-option" type="password" name="password" value="" placeholder="Password"></td></tr>
 		        <tr><td colspan="2"><button type='submit' class="login-button">LOGIN</button></td></tr>
-						<tr><td colspan="2"><a href="/signup" class="signup-link">SIGN UP</a>	<p style="font-family: 'Century Gothic'; color: red;"><%= message %></p></td></tr>
+				<tr><td colspan="2"><a href="/signup" class="signup-link">SIGN UP</a></td>
+
+					<p style="font-family: 'Century Gothic'; color: red;"><%= message %></p>
+				</tr>
+				<tr><td colspan="2"><a href="/retrievePassword" class="signup-link">FORGOT PASSWORD?</a></td></tr>
 		    </table>
 		</form>
 	</div>

@@ -4,6 +4,17 @@ var db = require('../db');
 var bcrypt   = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var LocalStrategy = require('passport-local').Strategy;
+var nodemailer = require('nodemailer');
+var smtpTransport = require('nodemailer-smtp-transport');
+
+// Defining the Mail Transport System
+var transport = nodemailer.createTransport(smtpTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'bookmarxt2@gmail.com', // my mail
+        pass: 'DPSSNBookmarxt2'
+    }
+}));
 
 var Model = require('../model');
 
@@ -199,12 +210,12 @@ function encrypt(text){
   return crypted;
 }
  
-/*function decrypt(text){
+function decrypt(text){
   var decipher = crypto.createDecipher(algorithm,password)
   var dec = decipher.update(text,'hex','utf8')
   dec += decipher.final('utf8');
   return dec;
-}*/
+}
 
 exports.signIn = function(req, res, next) {
   if(req.isAuthenticated()) {
@@ -327,6 +338,89 @@ exports.signOut = function(req, res, next) {
     res.redirect('/');
   }
 };
+
+exports.passChange = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  } else {
+    // Decrypt the user's password and ensure there is a match, if there is, then change the password
+    console.log(req.user.attributes.password);
+    var userPass = decrypt(req.user.attributes.password);
+    console.log(userPass);
+    if(userPass == req.body.oldpass) {
+      // Change the password to new password after encryption
+      var encryptedPass = encrypt(req.body.newpass);
+      console.log(encryptedPass);
+      var queryString = 'UPDATE users SET password =' + "'" + encryptedPass + "'" + ' WHERE email = ' + "'" + req.user.attributes.email + "'";
+      db.query(queryString, function(err){
+        if(err){
+          console.log(err);
+          res.render('settings', {message: 'Error occurred, please try a different password!', color: 'red'})
+        } else {
+          res.render('settings', {message: 'Password successfully changed, press CANCEL to go back', color: '#0E8443'});
+        }
+      });
+    } else {
+      res.render('settings', {message: 'Old password does not match!', color: 'red'});
+    }
+  }
+}
+
+exports.settings = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  } else {
+    // req.logout();
+    res.render('settings', {color: 'red', message: '', button: 'CANCEL'});
+  }
+}
+
+exports.retrievePassword = function(req, res, next) {
+  if(req.isAuthenticated()) {
+    res.redirect('/bookmarks');
+  }
+  res.render('retrievePassword', {message: ''});
+}
+
+exports.send = function(req, res, next) {
+  if(req.isAuthenticated()) {
+    res.redirect('/bookmarks');
+  }
+  var email = req.body.email;
+
+  var queryString = 'SELECT password from users where email=' + "'" + email + "'";
+
+  // Retrieve email account and password from Database
+  db.query(queryString, function(err, result) {
+    if (err) {
+      res.render('retrievePassword', {message: 'Please enter a valid Bookmarx account name!'});
+    }
+    if(result.length == 0) {
+      res.render('retrievePassword', {message: 'Please enter a valid Bookmarx account name!'});
+    }
+    else {
+      if(result[0].password.length != 0) {
+        var decryptedPassword = decrypt(result[0].password);
+        var mailOptions={
+            to : email,
+            subject : 'Password Retrieval from Bookmarx!',
+            text : 'Hi! Your password for your Bookmarx account with this email is: ' + decryptedPassword
+        }
+        transport.sendMail(mailOptions, function(error, response) {
+          if (error) {
+            console.log(error);
+            throw err;
+          }
+          else {
+            res.render('login', {message: 'Email has been sent!'});
+          }
+        });
+      } else {
+        res.render('retrievePassword', {message: 'Account does not have a password.'});
+      }
+    }
+  });
+}
 
 /* Checks with regular expressions if the email is valid */
 function validateEmail(email) {
