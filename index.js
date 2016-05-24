@@ -98,9 +98,10 @@ app.post('/api/bookmarks', routes.insert);
 app.delete('/api/bookmarks/:bookmark_id(\\d+)', routes.delete);
 app.put('/api/bookmarks/:bookmark_id(\\d+)', routes.update);
 app.get('/folder', routes.folder);
-/*app.get('/login', function(req, res) {
-	res.render('login')
-});*/
+app.get('/settings', routes.settings);
+app.post('/passChange', routes.passChange);
+app.get('/retrievePassword', routes.retrievePassword);
+app.post('/forgotPassword', routes.send);
 
 
 app.use(function(req,res){
