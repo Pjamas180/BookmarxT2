@@ -112,14 +112,14 @@
         //});
     }
 
-
   function JSON2CSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
 
     var str = '';
     var line = '';
 
-
+    console.log("my object: " + objArray);
+    console.log(array);
     for (var i = 0; i < array.length; i++) {
         var line = '';
 
@@ -134,6 +134,75 @@
     return str;
     
 }
+
+
+function handleFiles(files){
+
+    console.log("files: " + files);
+    var file = files[0];
+
+    console.log("Nina is r00d: " + file.name);
+    getAsText(file);
+}
+
+
+function getAsText(fileToRead) {
+      var reader = new FileReader();
+      // Read file into memory as UTF-8      
+      reader.readAsText(fileToRead);
+      // Handle errors load
+      reader.onload = loadHandler;
+      reader.onerror = errorHandler;
+    }
+
+    function loadHandler(event) {
+      var csv = event.target.result;
+      processData(csv);
+    }
+
+    function processData(csv) {
+        var allTextLines = csv.split(/\r\n|\n/);
+        var lines = [];
+        for (var i=0; i<allTextLines.length; i++) {
+            var data = allTextLines[i].split(';');
+                var tarr = [];
+                for (var j=0; j<data.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
+        }
+      console.log(lines);
+
+      for (var i = 0; i < lines.length; i++) {
+                
+            console.log("This is my: " + i + " time");
+            for(var index in lines[i]) {   
+            var str = lines[i][index];
+            var res = str.split(",");
+
+            for(var j = 0; j < res.length; j+=8){
+
+                                $.ajax({
+                    url: '/api/bookmarks/',
+            data: 'title=' + res[j+2] + '&url=' + res[j+8] + '&keywords=' + res[j+3] + '&description=' + res[j+4] + '&star=' + res[j+7],
+            type: 'POST',
+            success: function(res) {
+                loadList();
+            }
+        });
+            }
+            
+            //console.log(res);
+         }
+
+       }
+    }
+
+    function errorHandler(evt) {
+      if(evt.target.error.name == "NotReadableError") {
+          alert("Canno't read file !");
+      }
+    }
 
 
     /**
