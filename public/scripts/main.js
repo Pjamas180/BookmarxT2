@@ -84,10 +84,116 @@
 
         $.get('/api/bookmarks/', function(books){
 
-                console.log(books);
-                window.open("data:text/csv;charset=utf-8," + escape(csv));
+                //console.log(books);
+                var csv = JSON2CSV(books);
+                console.log(csv);
+                window.open("data:text/csv;charset=utf-8," + escape(csv))
         });
         //});
+    }
+
+  function JSON2CSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+    var str = '';
+    var line = '';
+
+    console.log("my object: " + objArray);
+    console.log(array);
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+
+            var count = 0;
+            for (var index in array[i]) {
+                if(count == 4)
+                {
+                    var tags = array[i][index];
+                    tags = tags.replaceAll(",","&");
+                    line += tags + ',';
+                }
+                else
+                {
+                    line += array[i][index] + ',';
+                }
+                count = count + 1;
+            }
+            count = 0;
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+    }
+    return str;
+    
+}
+String.prototype.replaceAll = function(str1, str2, ignore) 
+{
+    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
+}
+
+function handleFiles(files){
+
+    console.log("files: " + files);
+    var file = files[0];
+
+    getAsText(file);
+}
+
+
+function getAsText(fileToRead) {
+      var reader = new FileReader();
+      // Read file into memory as UTF-8      
+      reader.readAsText(fileToRead);
+      // Handle errors load
+      reader.onload = loadHandler;
+      reader.onerror = errorHandler;
+    }
+
+    function loadHandler(event) {
+      var csv = event.target.result;
+      processData(csv);
+    }
+
+    function processData(csv) {
+        var allTextLines = csv.split(/\r\n|\n/);
+        var lines = [];
+        for (var i=0; i<allTextLines.length; i++) {
+            var data = allTextLines[i].split(';');
+                var tarr = [];
+                for (var j=0; j<data.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
+        }
+      console.log(lines);
+
+      for (var i = 0; i < lines.length; i++) {
+                
+            console.log("This is my: " + i + " time");
+            for(var index in lines[i]) {   
+            var str = lines[i][index];
+            var res = str.split(",");
+
+            for(var j = 0; j < res.length; j+=8){
+                console.log("keywords: "+ res[j+3]);
+                                $.ajax({
+                    url: '/api/bookmarks/',
+            data: 'title=' + res[j+2] + '&url=' + res[j+8] + '&keywords=' + res[j+4].replaceAll("&",",") + '&description=' + res[j+3] + '&star=' + res[j+7],
+            type: 'POST',
+            success: function(res) {
+                loadList();
+            }
+        });
+            }
+            
+            //console.log(res);
+         }
+
+       }
+    }
+
+    function errorHandler(evt) {
+      if(evt.target.error.name == "NotReadableError") {
+          alert("Canno't read file !");
+      }
     }
 
 
