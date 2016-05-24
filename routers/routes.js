@@ -45,7 +45,7 @@ var list = exports.list = function(req, res, next) {
   {
     tag = tag.trim();
     // TODO: Uncomment the following and comment out the line below when login is done DONE
-    orderBy = "AND tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "'";
+    orderBy = "AND tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "' OR tags = '"+ tag + "'" ;
     // orderBy = "WHERE tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "'";
   }
 
@@ -74,15 +74,15 @@ exports.insert = function(req, res, next) {
   var tags = db.escape(req.body.keywords);
   var description = db.escape(req.body.description);
   var star = db.escape(req.body.star);
-  console.log("TITLE:" + title);
+  console.log("TITLE:" + star);
   // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = db.escape(req.user.get("user_id"));
 
-  if(star == null)
+  if(star == "0")
   {
   	star = 0;
   }
-  if(star == "on")
+  if(star == "1")
   {
   	star = 1;
   }
@@ -94,9 +94,9 @@ exports.insert = function(req, res, next) {
     ('00' + date.getUTCHours()).slice(-2) + ':' + 
     ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
     ('00' + date.getUTCSeconds()).slice(-2);
-  console.log(title + url + tags + description + star);
+  
   date = "'"+ date.toString() + "'";
-
+  console.log(title + url + tags + description + star + date);
   // TODO: Uncomment the following and comment out the line below when login is done DONE
   var queryString = 'INSERT INTO bookmarks (user_id, title, url, tags, updated_at, created_at, description, star) VALUES (' + userID  + ', ' + title + ', ' + url + ', ' + tags + ', ' + date + ', ' + date + ', ' + description + ', ' + star +  ')';
   // var queryString = 'INSERT INTO bookmarks (title, url, tags, updated_at, created_at, description, star) VALUES (' + title + ', ' + url + ', ' + tags + ', ' + date + ', ' + date + ', ' + description + ', ' + star +  ')';
