@@ -76,6 +76,21 @@
         });
     }
 
+    function getCSV(){
+
+        //$("#download").click(function() {
+
+        console.log("clicked");
+
+        $.get('/api/bookmarks/', function(books){
+
+                console.log(books);
+                window.open("data:text/csv;charset=utf-8," + escape(csv));
+        });
+        //});
+    }
+
+
     /**
      *  Displays the confirm delete page for the passed in book.
      */
