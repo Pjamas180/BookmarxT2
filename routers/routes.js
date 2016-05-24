@@ -27,7 +27,6 @@ var list = exports.list = function(req, res, next) {
   var search = req.param('search');
   var tag = req.param('tag');
 
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
   var orderBy = "";
@@ -37,23 +36,16 @@ var list = exports.list = function(req, res, next) {
   }
   if(search)
   {
-    // TODO: Uncomment the following and comment out the line below when login is done DONE
     orderBy = "AND title LIKE '%" + search + "%'";
-    // orderBy = "WHERE title LIKE '%" + search + "%'";
   }
   if(tag)
   {
     tag = tag.trim();
-    // TODO: Uncomment the following and comment out the line below when login is done DONE
     orderBy = "AND tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "' OR tags = '"+ tag + "'" ;
-    // orderBy = "WHERE tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "'";
   }
 
-  // TODO: Uncomment the following and comment out the line below when login is done DONE
   db.query('SELECT * from bookmarks WHERE user_id=' + userID + " " + orderBy, function(err, books) {
-	// db.query('SELECT * from bookmarks ' + orderBy, function(err, books) {
     if (err) throw err;
-    //console.log(books);
     res.json(books);
   });
 	
@@ -75,7 +67,6 @@ exports.insert = function(req, res, next) {
   var description = db.escape(req.body.description);
   var star = db.escape(req.body.star);
   console.log("TITLE:" + star);
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = db.escape(req.user.get("user_id"));
 
   if(star == "0")
@@ -97,10 +88,9 @@ exports.insert = function(req, res, next) {
   
   date = "'"+ date.toString() + "'";
   console.log(title + url + tags + description + star + date);
-  // TODO: Uncomment the following and comment out the line below when login is done DONE
+  
   var queryString = 'INSERT INTO bookmarks (user_id, title, url, tags, updated_at, created_at, description, star) VALUES (' + userID  + ', ' + title + ', ' + url + ', ' + tags + ', ' + date + ', ' + date + ', ' + description + ', ' + star +  ')';
-  // var queryString = 'INSERT INTO bookmarks (title, url, tags, updated_at, created_at, description, star) VALUES (' + title + ', ' + url + ', ' + tags + ', ' + date + ', ' + date + ', ' + description + ', ' + star +  ')';
-  // console.log(queryString);
+  
   db.query(queryString, function(err){
     list(req, res);
   });
@@ -111,11 +101,9 @@ exports.edit = function(req, res, next) {
   }
 	var id = req.params.bookmark_id;
 	id = parseInt(id);
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
   
   db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err, book){
-  // db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
     if (err) throw err;
     var check = "";
     if(book[0].star == 1) check = "checked";
@@ -133,7 +121,6 @@ exports.update = function(req, res, next) {
   var star = db.escape(req.body.star);
   var id = db.escape(req.params.bookmark_id);
 
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = db.escape(req.user.get("user_id"));
 
   if(star == null)
@@ -152,13 +139,9 @@ exports.update = function(req, res, next) {
     ('00' + date.getUTCHours()).slice(-2) + ':' + 
     ('00' + date.getUTCMinutes()).slice(-2) + ':' + 
     ('00' + date.getUTCSeconds()).slice(-2);
-  // console.log(title + url + tags + description + star);
   date = "'"+ date.toString() + "'";
 
-  // TODO: Uncomment the following and comment out the line below when login is done DONE
   var queryString = 'UPDATE bookmarks SET title =' + title + ', url =' + url + ', tags =' + tags + ', updated_at =' + date + ', description=' + description + ', star=' + star +  ' WHERE bookmark_id = ' + id + ' AND user_id = ' + userID;
-  //var queryString = 'UPDATE bookmarks SET title =' + title + ', url =' + url + ', tags =' + tags + ', updated_at =' + date + ', description=' + description + ', star=' + star +  ' WHERE bookmark_id = ' + id;
-  // console.log(queryString);
   db.query(queryString, function(err){
     list(req, res);
   });
@@ -168,25 +151,19 @@ exports.confirmdelete = function(req, res, next) {
     notFound404(req, res, next);
   }
   var id = req.params.bookmark_id;
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
   db.query('SELECT * from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err, book){
-  //db.query('SELECT * from bookmarks WHERE bookmark_id =  ' + id, function(err, book) {
     if (err) throw err;
     res.render('delete', {book: book[0]});
   });
 };
 exports.delete = function(req, res, next) {
   var id = db.escape(req.params.bookmark_id);
-  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
   var userID = req.user.get("user_id");
 
-  // TODO: Uncomment the following and comment out the line below when login is done DONE
   db.query('DELETE from bookmarks WHERE bookmark_id = ' + id + ' AND user_id = '+ userID, function(err){
-  //db.query('DELETE from bookmarks WHERE bookmark_id = ' + id, function(err){
     if (err) throw err;
-    //res.json({ message: 'Book Deleted' });
     list(req, res);
   });
 };
