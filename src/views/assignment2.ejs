@@ -1,0 +1,143 @@
+<div class="side-bar">
+		<h1 onClick="location.href='/'">BookMarx</h1>
+
+		<div class="folder-wrapper">
+			<div onClick="showAdd();" class="add-folder"><p>Add bookmark</p></div>
+			<div onClick="location.href='/settings'" class="settings"><p>Settings</p></div>
+			<div onClick="location.href='/signout'" class="signout"><p>Sign Out</p></div>
+			<div class="import-export-container">
+				<p class='import-export'>
+				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+				<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
+				</p>
+			</div>
+			<div class="nav-right col-md-4 sidebar-search">
+					<form action = "/" method = "get" >
+						<div class="input-group">
+										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
+										<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Go!</button>
+										</span>
+						</div>
+					</form>
+			</div>
+			<h2 class="my-list">My Lists</h2>
+			<form id="sidebar-sort-controls" action="sort.php" method="post" style="display:inline;">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle sidebar-sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort by... <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+								<li><a href="/bookmarks?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/bookmarks?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/bookmarks?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/bookmarks?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/bookmarks?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/bookmarks?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/bookmarks?sort=star&order=desc">Starred/Unstarred</a></li>
+							</ul>
+				</div>
+			</form>
+			<table>
+				<% books.forEach(function(book) { %>
+				<tr>
+					<td>
+						<a href="<%= book.url %>"><%= book.title %></a>
+					</td>
+					<td class = "icon pencil">
+						<div id="title<%=book.bookmark_id%>" style = "display:none"><%=book.title%></div>
+						<div id="url<%=book.bookmark_id%>" style = "display:none"><%=book.url%></div>
+						<div id="description<%=book.bookmark_id%>" style = "display:none"><%=book.description%></div>
+						<div id="keywords<%=book.bookmark_id%>" style = "display:none"><%=book.tags%></div>
+						<div id="star<%=book.bookmark_id%>" style = "display:none"><%=book.star%></div>
+						<a onclick="showEdit(<%= book.bookmark_id %>);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+					</td>
+					<td class = "icon trash">
+						<a onclick="confirmDelete(<%= book.bookmark_id %>);"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+					</td>
+					<td class="icon star">
+						<i class="fa fa-star-o" <% if(book.star == "1"){%> style = "color:yellow" <% } %>aria-hidden="true"></i>
+					</td>
+				</tr>
+				<% }); %>
+			</table>
+		</div>
+	</div>
+
+	<div class="home-container">
+			<div class="row ">
+				<div class="nav-left col-md-8" >
+					<form id="sort-controls" action="sort.php" method="post" style="display:inline;">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Sort bookmarks by... <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="/bookmarks?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/bookmarks?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/bookmarks?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/bookmarks?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/bookmarks?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/bookmarks?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/bookmarks?sort=star&order=desc">Starred/Unstarred</a></li>
+							</ul>
+						</div>
+					</form>
+					<p class='import-export'>
+					Import bookmark&nbsp;<a href="#"><input type="file" id="input" onchange="handleFiles(this.files)" class="glyphicon glyphicon-import"></input></a></p>
+					<p class='import-export'>Export book&nbsp;<a href="#"><span id="download" onclick="getCSV()" class="glyphicon glyphicon-export"></span></a>
+					</p>
+				</div>
+
+				<div class=" nav-right col-md-4">
+					<form action = "/bookmarks" method = "get" >
+						<div class="input-group">
+										<input type="text" name = "search" class="form-control fix-height" placeholder="Search for...">
+										<span class="input-group-btn">
+										<button class="btn btn-default" type="submit">Go!</button>
+										</span>
+						</div>
+					</form>
+					</div>
+			</div>
+			<hr>
+	<div class ="container-fluid">
+		<%
+		var x = 0;
+		var row = false;
+		books.forEach(function(book) { %>
+		<% if (x == 0) {
+			row = false;
+			%>
+			<div class="row ">
+		<% } %>
+		  <div class="col-md-4">
+				<div id="facebook" class="cards">
+				<h1><%= book.title %></h1>
+				<p class="bookmark-description">
+					<%= book.description %>
+				</p>
+				<a class="bookmark-button" style="text-decoration: none" href="<%= book.url %>" target="_blank">
+					<p>Link</p>
+				</a>
+				<p class="tags"><span>Tags: </span>
+					<% var res = book.tags.split(",");
+					   var c = 0;
+						res.forEach(function(tag){
+					%>
+					<a href = "/bookmarks?tag=<%= tag %>" ><%= tag %></a>
+					<% if(c < res.length-1) { %> ,
+					<% } %>
+					<% c ++;}); %>
+				</p>
+			</div>
+		</div>
+
+		  <% x++; if(x ==3) { %>
+		</div>
+		   <% x = 0; row = true; } %>
+		   <% }); %>
+		<% if(x < 3 && row == false) { %>
+		</div>
+		<% } %>
+</div>

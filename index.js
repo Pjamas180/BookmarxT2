@@ -16,6 +16,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
+var compression = require('compression');
 var mySession = session({
   secret: 'N0deJS1sAw3some',
   resave: true,
@@ -28,9 +29,10 @@ app.use(mySession);
 /*  Not overwriting default views directory of 'views' */
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
+app.use(compression());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('public'));
+app.use(express.static('dist'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Nodejs encryption with CTR

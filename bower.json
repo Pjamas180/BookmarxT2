@@ -1,0 +1,22 @@
+{
+  "name": "Bookmarks",
+  "version": "1.0",
+  "authors": [
+    "Dennis Ku <deku@ucsd.edu>"
+  ],
+  "description": "Bookmarx",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}</deku@ucsd.edu>

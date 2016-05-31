@@ -1,0 +1,27 @@
+<div class="container">
+		<form id = "add-form">
+			<h2>Bookmarx</h2>
+			<p>Add a new bookmark</p>
+			<p>Fill out the form with the requested values</p>
+			<input type="text" id = "title" name="title" placeholder="Title" required="true"><br>
+			<input type="url" id = "url" name="url" placeholder="URL" required="true"><br>
+			<div class="folder">
+				<input type="checkbox" value="selected" id="social-folder" class="folder-input">
+				<label for="social-folder" class="social-label">Advanced Options</label>
+				<div role="folder" class="folder-content">
+					<input id = "keywords" class="input-option" type="text" name="keywords" placeholder="Keywords"><br>
+					<input id = "description" class="input-option" type="text" name="description" placeholder="Description"><br>
+					<label for="star">Star it?</label>
+					<br>
+					<select id="star" name="star">
+     					<option value="1">Yes</option>
+      					<option value="0">No</option>
+    				</select>
+    			<br>
+				</div>
+			</div>
+
+			<button class="btn-form" type = "button" id="confirm_add" onclick="addBook();">ADD</button>
+			<button class="btn-form" type = "button" id="cancel_add" onClick="loadList();" style="float:right">CANCEL</button>
+		</form>
+</div>

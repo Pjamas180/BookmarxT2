@@ -1,0 +1,11 @@
+<div class="container">
+    <h2>Bookmarx</h2>
+    <p><b>Are you sure you want to delete '<%= book.title %>'?</b></p>
+    <p>Title: <i><%= book.title %></i></p>
+    <p>URL: <i><%= book.url %></i></p>
+    <p>Keywords: <i><%= book.tags %></i></p>
+  		<form id="delete-button-wrapper" >
+				<button class="btn-form" type = "button" onclick="deleteBook(<%= book.id %>);" id="confirm_delete">Delete</button>
+				<button class="btn-form" type = "button" id="cancel_delete" onClick="loadList();" style="float:right">CANCEL</button>
+	</form>
+</div>

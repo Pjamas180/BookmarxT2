@@ -1,0 +1,19 @@
+<div class="container">
+  <form id = "edit-form">
+		<h2>Bookmarx</h2>
+		<p>Edit <i>Title of selected Bookmark</i></p>
+		<p>Write the new values for this bookmark and click Edit</p>
+		<input type="text" name="title" placeholder="Title" required="true" id="edittitle<%= book.id %>" value = "<%= book.title %>"><br>
+		<input type="url" name="url" placeholder="URL" required="true" id="editurl<%= book.id %>" value = "<%= book.url %>"><br>
+		<input type="text" name="keywords" placeholder="Keywords" id="editkeywords<%= book.id %>" value = "<%= book.keywords %>"><br>
+		<input type="text" name="description" placeholder="Description" id="editdescription<%= book.id %>" value = "<%= book.description %>"><br>
+		<label for="editstar<%= book.id %>">Star it?</label><br>
+		<select id="editstar<%= book.id %>" name="star">
+      <option value="1" <%= book.yes %>>Yes</option>
+      <option value="0" <%= book.no %>>No</option>
+    </select>
+    <br>
+		<button class="btn-form" type = "button" id="confirm_edit" onclick="updateBook(<%= book.id %>);">EDIT</button>
+		<button class="btn-form" type = "button" id="cancel_edit" onclick="loadList();" style="float:right">CANCEL</button>
+	</form>
+</div>
