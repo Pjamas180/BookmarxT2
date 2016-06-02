@@ -129,9 +129,24 @@
 	margin-bottom: 8px;
 }
 
-.import-export {
-	display:inline;
+.import {
+	display: inline;
 	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.import-label {
+	color: #337ab7;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.export {
+	display: inline;
+}
+
+#input {
+	display: none;
 }
 
 .sidebar-search {

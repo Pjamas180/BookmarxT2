@@ -19,7 +19,7 @@
   ga('create', 'UA-60713168-2', 'auto');
   ga('send', 'pageview');
 
-</script>  
+</script>
 </head>
 
 <body>
@@ -109,9 +109,11 @@
 							</ul>
 						</div>
 					</form>
-					<p class='import-export'>
-					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
-					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
+					<p class='import'>
+					Import bookmark&nbsp;
+					<label for="input" class="glyphicon glyphicon-import import-label"></label>
+					<input type="file" id="input" onchange="handleFiles(this.files)"></input></p>
+					<p class='export'>Export bookmark&nbsp;<a href="#"><span id="download" onclick="getCSV()" class="glyphicon glyphicon-export"></span></a>
 					</p>
 				</div>
 
