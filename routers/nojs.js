@@ -194,7 +194,7 @@ exports.import = function(req, res, next) {
     notFound404(req, res, next);
   }
 
-  res.redirect('/bookmarks');
+  res.render('import', {message: 'Please enable your javascript to import!'});
 
 };
 
@@ -203,11 +203,6 @@ exports.export = function(req, res, next) {
     notFound404(req, res, next);
   }
   getCSV(req, res);
-
-
-
-
-  //res.redirect('/bookmarks');
 };
 
 function getCSV(req, res) {
