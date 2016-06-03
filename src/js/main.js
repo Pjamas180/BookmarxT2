@@ -76,7 +76,7 @@
         });
     }
 
-    function getCSV(){
+    function getCSV() {
 
         //$("#download").click(function() {
 

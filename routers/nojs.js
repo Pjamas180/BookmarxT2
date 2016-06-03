@@ -4,6 +4,7 @@ var db = require('../db');
 var bcrypt   = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var LocalStrategy = require('passport-local').Strategy;
+var open = require('open');
 
 var Model = require('../model');
 
@@ -186,11 +187,110 @@ exports.folder = function(req, res, next) {
   }
 };
 
-/*
-exports.login = function(req, res) {
-  res.render('assignment2');
+exports.import = function(req, res, next) {
+
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
+
+  res.redirect('/bookmarks');
+
 };
-*/
+
+exports.export = function(req, res, next) {
+  if(!req.isAuthenticated()) {
+    notFound404(req, res, next);
+  }
+  getCSV(req, res);
+
+
+
+
+  res.redirect('/bookmarks');
+};
+
+function getCSV(req, res) {
+
+  /*
+  $.get('/api/bookmarks/', function(books){
+    var csv = JSON2CSV(books);
+    console.log(csv);
+    window.open("data:text/csv;charset=utf-8," + escape(csv))
+  });
+  */
+
+  var sort = req.param('sort');
+  var order = req.param('order');
+  var search = req.param('search');
+  var tag = req.param('tag');
+
+  // TODO: Add variable userID (use parseInt()) with the user id of current user DONE
+  var userID = req.user.get("user_id");
+
+  var orderBy = "";
+  if(sort)
+  {
+    orderBy = "ORDER BY " + sort + " " + order;
+  }
+  if(search)
+  {
+    // TODO: Uncomment the following and comment out the line below when login is done DONE
+    orderBy = "AND title LIKE '%" + search + "%'";
+    // orderBy = "WHERE title LIKE '%" + search + "%'";
+  }
+  if(tag)
+  {
+    tag = tag.trim();
+    // TODO: Uncomment the following and comment out the line below when login is done DONE
+    orderBy = "AND tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "' OR tags = '"+ tag + "'" ;
+    // orderBy = "WHERE tags LIKE '" + tag + ",%' OR tags LIKE '%," + tag + ",%' OR tags LIKE '%," + tag + "'";
+  }
+
+  // TODO: Uncomment the following and comment out the line below when login is done DONE
+  db.query('SELECT * from bookmarks WHERE user_id=' + userID + " " + orderBy, function(err, books) {
+  // db.query('SELECT * from bookmarks ' + orderBy, function(err, books) {
+    if (err) throw err;
+    //console.log(books);
+    var csv = JSON2CSV(books);
+    console.log(csv);
+    // window.open("data:text/csv;charset=utf-8," + escape(csv))
+    open("data:text/csv;charset=utf-8," + escape(csv));
+  });
+}
+
+function JSON2CSV(objArray) {
+  var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+
+  var str = '';
+  var line = '';
+
+  console.log("my object: " + objArray);
+  console.log(array);
+  for (var i = 0; i < array.length; i++) {
+    var line = '';
+
+    var count = 0;
+    for (var index in array[i]) {
+      if(count == 4)
+      {
+        var tags = array[i][index];
+        console.log(tags);
+        tags = String(tags).replace(",","&");
+        line += tags + ',';
+      }
+      else
+      {
+        line += array[i][index] + ',';
+      }
+      count = count + 1;
+    }
+    count = 0;
+    line = line.slice(0, -1);
+    str += line + '\r\n';
+  }
+  return str;
+
+}
 
 // Nodejs encryption with CTR
 var crypto = require('crypto'),

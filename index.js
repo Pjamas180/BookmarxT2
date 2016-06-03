@@ -114,6 +114,8 @@ app.get('/edit/:bookmark_id(\\d+)', nojs.edit);
 app.get('/confirmdelete/:bookmark_id(\\d+)', nojs.confirmdelete);
 app.get('/delete/:bookmark_id(\\d+)', nojs.delete);
 app.post('/update/:bookmark_id(\\d+)', nojs.update);
+app.get('/import', nojs.import);
+app.get('/export', nojs.export);
 
 app.use(function(req,res){
     res.status(404).render('404.ejs');
