@@ -176,11 +176,11 @@ function getAsText(fileToRead) {
                 console.log("keywords: "+ res[j+3]);
                                 $.ajax({
                     url: '/api/bookmarks/',
-            data: 'title=' + res[j+2] + '&url=' + res[j+8] + '&keywords=' + res[j+4].replaceAll("&",",") + '&description=' + res[j+3] + '&star=' + res[j+7],
-            type: 'POST',
-            success: function(res) {
-                loadList();
-            }
+                    data: 'title=' + res[j+2] + '&url=' + res[j+8] + '&keywords=' + res[j+4].replaceAll("&",",") + '&description=' + res[j+3] + '&star=' + res[j+7],
+                    type: 'POST',
+                    success: function(res) {
+                        loadList();
+                    }
         });
             }
             
@@ -192,7 +192,7 @@ function getAsText(fileToRead) {
 
     function errorHandler(evt) {
       if(evt.target.error.name == "NotReadableError") {
-          alert("Canno't read file !");
+          alert("Cannot read file !");
       }
     }
 
