@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.min.css">
+	<title>Settings</title>
+</head>
+<body>
+  <div class="container">
+		<form id = "edit-form" action="/passChange" method="post">
+			<h2>Bookmarx</h2>
+			<h3>User Settings</h3>
+			<h5>Update Password</h5>
+			<input type="password" name="oldpass" placeholder="Old Password" required="true"><br>
+			<input type="password" name="newpass" placeholder="New Password" required="true"><br>
+			<button class="btn-form" type = "submit" id="confirm_edit">CONFIRM</button>
+			<button class="btn-form" type = "button" id="cancel_edit" onClick="location.href='/bookmarks'" style="float:right">CANCEL</button>
+			<p style="font-family: 'Century Gothic'; color: '<%= color %>';"><%= message %></p>
+		</form>
+
+
+  </div>
+</body>
+</html>

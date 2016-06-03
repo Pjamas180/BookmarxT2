@@ -1,22 +1,25 @@
+<!--  Clean solution, but external template forces extra Ajax request.
+      Request should not be necessary because template is static. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Bookmarx</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 </head>
 <body>
-<div id="display"><div class="side-bar">
-		<h1>BookMarx</h1>
+<div id="display">
+	<div class="side-bar">
+		<h1 onClick="location.href='/'">BookMarx</h1>
 
 		<div class="folder-wrapper">
-			<div  class="add-folder"><p><a style = "text-decoration:none; color: white" href='/add'>Add bookmark</a></p></div>
-			<div class="signout"><p><a style = "text-decoration:none; color: white" href='/signout'>Sign Out</a></p></div>
-			<div class="settings"><p><a style = "text-decoration:none; color: white" href='/settings'>Settings</a></p></div>
+			<a href='/add' class="add-folder"><p>Add bookmark</p></div>
+			<a href='/signout' class="signout"><p>Sign Out</p></div>
+			<a href='/settings' class="settings"><p>Settings</p></div>
 			<div class="import-export-container">
 				<p class='import-export'>
 				Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
@@ -33,21 +36,22 @@
 						</div>
 					</form>
 			</div>
-			<h2 class="my-list">Manage Bookmarks</h2>
+			<h2 class="my-list">My List</h2>
 			<form id="sidebar-sort-controls" action="sort.php" method="post" style="display:inline;">
-				<div class="dropdown">
-  
-							<button class="dropbtn">Sort By...</button>
-							<div class="dropdown-content">
-								<a href="/bookmarks?sort=title&order=asc">Title (Asc)</a>
-								<a href="/bookmarks?sort=title&order=desc">Title (Desc)</a>
-								<a href="/bookmarks?sort=created_at&order=asc">Create Date (Asc)</a>
-								<a href="/bookmarks?sort=created_at&order=desc">Create Date (Desc)</a>
-								<a href="/bookmarks?sort=updated_at&order=asc">Update Date (Asc)</a>
-								<a href="/bookmarks?sort=updated_at&order=desc">Update Date (Desc)</a>
-								<a href="/bookmarks?sort=star&order=desc">Starred/Unstarred</a>
-							</div>
-					</div>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle sidebar-sort-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort by... <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+								<li><a href="/?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/?sort=star&order=desc">Starred/Unstarred</a></li>
+							</ul>
+				</div>
 			</form>
 			<table>
 				<% books.forEach(function(book) { %>
@@ -67,7 +71,7 @@
 						<a href="/confirmdelete/<%= book.bookmark_id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 					</td>
 					<td class="icon star">
-						<i class="fa fa-star-o" <% if(book.star == "1"){%> style = "color:yellow" <% } %>aria-hidden="true"></i>
+						<i class="fa fa-star-o" aria-hidden="true"></i>
 					</td>
 				</tr>
 				<% }); %>
@@ -79,26 +83,25 @@
 	<div class="home-container">
 			<div class="row ">
 				<div class="nav-left col-md-8" >
-					
-						<div class="dropdown">
-  
-							<button class="dropbtn">Sort By...</button>
-							<div class="dropdown-content">
-								<a href="/bookmarks?sort=title&order=asc">Title (Asc)</a>
-								<a href="/bookmarks?sort=title&order=desc">Title (Desc)</a>
-								<a href="/bookmarks?sort=created_at&order=asc">Create Date (Asc)</a>
-								<a href="/bookmarks?sort=created_at&order=desc">Create Date (Desc)</a>
-								<a href="/bookmarks?sort=updated_at&order=asc">Update Date (Asc)</a>
-								<a href="/bookmarks?sort=updated_at&order=desc">Update Date (Desc)</a>
-								<a href="/bookmarks?sort=star&order=desc">Starred/Unstarred</a>
-							</div>
-					</div>
-					
-					<p class='import'>
-					Import bookmark&nbsp;
-					<label for="input" class="glyphicon glyphicon-import import-label"></label>
-					<input type="file" id="input" onchange="handleFiles(this.files)"></input></p>
-					<p class='export'>Export bookmark&nbsp;<a href="#"><span id="download" onclick="getCSV()" class="glyphicon glyphicon-export"></span></a>
+					<form id="sort-controls" action="sort.php" method="post" style="display:inline;">
+						<div class="btn-group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Sort bookmarks by... <span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a href="/?sort=title&order=asc">Title (Asc)</a></li>
+								<li><a href="/?sort=title&order=desc">Title (Desc)</a></li>
+								<li><a href="/?sort=created_at&order=asc">Create Date (Asc)</a></li>
+								<li><a href="/?sort=created_at&order=desc">Create Date (Desc)</a></li>
+								<li><a href="/?sort=updated_at&order=asc">Update Date (Asc)</a></li>
+								<li><a href="/?sort=updated_at&order=desc">Update Date (Desc)</a></li>
+								<li><a href="/?sort=star&order=desc">Starred/Unstarred</a></li>
+							</ul>
+						</div>
+					</form>
+					<p class='import-export'>
+					Import bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-import"></span></a></p>
+					<p class='import-export'>Export bookmark&nbsp;<a href="#"><span class="glyphicon glyphicon-export"></span></a>
 					</p>
 				</div>
 
@@ -138,13 +141,14 @@
 					   var c = 0;
 						res.forEach(function(tag){
 					%>
-					<a href = "/bookmarks?tag=<%= tag %>" ><%= tag %></a>
+					<a href = "/?tag=<%= tag %>" ><%= tag %></a>
 					<% if(c < res.length-1) { %> ,
 					<% } %>
 					<% c ++;}); %>
 				</p>
 			</div>
 		</div>
+
 		  <% x++; if(x ==3) { %>
 		</div>
 		   <% x = 0; row = true; } %>
@@ -152,13 +156,36 @@
 		<% if(x < 3 && row == false) { %>
 		</div>
 		<% } %>
-		
+		<div class="row">
+		  <div class="col-md-4"><div class="cards">
+				<h1>LinkedIn</h1>
+				<p class="bookmark-description">
+					Social media for professional use. Wish I had those 500+ connections.
+				</p>
+				<a class="bookmark-button" style="text-decoration: none" href="#" target="_blank">
+					Link
+				</a>
+				<p class="tags"><span>Tags: </span>linkedin, professional, get me a job</p>
+			</div></div>
+		  <div class="col-md-4">
+				<div class="cards">
+					<h1>GitHub</h1>
+					<p class="bookmark-description">
+						Where this project is hosted!!!
+					</p>
+					<a class="bookmark-button" style="text-decoration: none" href="#" target="_blank">
+						Link
+					</a>
+					<p class="tags"><span>Tags: </span>code, open source, git</p>
+				</div>
+		  </div>
+		</div>
 	</div>
 </div>
 
 <!-- Only using jquery for Ajax calls.  Consider changing to native -->
 <script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
-<script src="/js/ejs.min.js"></script>
+ <script src="/js/ejs.min.js"></script>
 <script src="/js/main.min.js"></script>
 </body>
 </html>

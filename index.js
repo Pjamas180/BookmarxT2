@@ -6,7 +6,7 @@ var Model = require('./model');
 
 // For Routes
 var routes = require('./routers/routes');
-
+var nojs = require('./routers/nojs');
 db.init();
 
 var express = require('express');
@@ -93,7 +93,7 @@ app.get('/signup', routes.signUp);
 app.post('/signup', routes.signUpPost);
 
 app.get('/signout', routes.signOut);
-
+app.get('/bookmarks', nojs.list);
 app.get('/api/bookmarks', routes.list);
 app.post('/api/bookmarks', routes.insert);
 //app.get('/delete', routes.delete);
@@ -105,6 +105,15 @@ app.post('/passChange', routes.passChange);
 app.get('/retrievePassword', routes.retrievePassword);
 app.post('/forgotPassword', routes.send);
 
+// No JS
+app.get('/home', nojs.list);
+app.get('/add', nojs.add);
+app.post('/insert', nojs.insert);
+app.get('/edit/:bookmark_id(\\d+)', nojs.edit);
+//app.get('/delete', routes.delete);
+app.get('/confirmdelete/:bookmark_id(\\d+)', nojs.confirmdelete);
+app.get('/delete/:bookmark_id(\\d+)', nojs.delete);
+app.post('/update/:bookmark_id(\\d+)', nojs.update);
 
 app.use(function(req,res){
     res.status(404).render('404.ejs');

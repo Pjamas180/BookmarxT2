@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/style.min.css">
+	<title>Bookmarx</title>
+</head>
+<body>
+	<div class="container">
+		<form id="signup" method='post' action='/signup'>
+		    <h2>Sign Up!</h2>
+		    <table>
+		        <tr><td>Email: </td><td><input class="input-option" type="text" name="username"  value="" placeholder="Email" ></td></tr>
+		        <tr><td>Password: </td><td><input class="input-option" type="password" name="password" value="" placeholder="Password"></td></tr>
+		        <tr><td colspan="2"><button type='submit' class="login-button">SIGN UP</button></td></tr>
+						<tr><td colspan="2"><a class="login-link" href="/">Back to Login</a>	<p style="font-family: 'Century Gothic'; color: red;"><%= message %></p></td></tr>
+		    </table>
+		</form>
+	</div>
+</body>
+</html>

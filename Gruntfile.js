@@ -61,30 +61,17 @@ module.exports = function(grunt) {
             expand: true
         }]
     }
-},
-htmlmin: {                                     // Task
-    dist: {                                      // Target
-      options: {      
-      ignoreCustomComments: true,                           // Target options
-        removeComments: true,
-        collapseWhitespace: true
-      },
-      files: {                                   // Dictionary of files
-        'dist/bookmarks/index.html': 'src/bookmarks/index.html'
-      }
-    }
-  }
+}
   });
 
   
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    //grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.registerTask('build', [
         'cssmin',
         'uglify',
-        'copy:dev',
-        'htmlmin'
+        'copy:dev'
     ]);
 };
