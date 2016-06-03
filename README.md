@@ -73,3 +73,21 @@ Pedro Villaroman
     * Styled login and signup pages
     * Fixed HTML markup issues
     * Fixed CSS issues
+* **Pedro Villaroman**
+ * Server-Side (Iteration 2)
+   * Login system using passport.JS
+   * Password hashing
+   * Update Password
+   * Forgot Password
+   * Login fixes
+ * Client-Side (Iteration 2)
+   * Update Password
+   * Forgot Password
+ * Server-Side (Iteration 1)
+   * Built login system using Passport.JS
+   * Started password Hashing
+   * Formatted and created herokuapp Server
+ * Isomorphic Application
+   * Provided assistance as necessary to Dennis
+   * Export and Import Isomorphic integration
+
