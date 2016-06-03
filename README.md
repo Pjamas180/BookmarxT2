@@ -67,12 +67,31 @@ Pedro Villaroman
  * Compression - very simple version
  * JS/CSS management (see above)
  * General bug-fixing/provide help and resources to teammates
+* **Nina Delos Santos**
+ * Client-Side (Iteration 1)
+    * Worked on HTML / CSS 
+ * Server-Side (Iteration 1)
+    * Import bookmarks as CSV
+    * Created 404 error page
+ * Server-Side (Iteration 2)
+    * Reducing Bootstrap Bloat
 * **Samantha Hahn**
  * Client-Side
    * Made templates responsive
     * Styled login and signup pages
     * Fixed HTML markup issues
     * Fixed CSS issues
+* **Spencer Rothschild**
+ * Client-Side (Iteration 1)
+    * Worked on HTML / CSS 
+    * Search / Sort
+    * Validate HTML
+ * Server-Side (Iteration 1)
+    * Error handling 404 / 403
+    * Export bookmarks as CSV
+ * Server-Side (Iteration 2)
+    * Google Analytics
+    * More Error Handling
 * **Pedro Villaroman**
  * Server-Side (Iteration 2)
    * Login system using passport.JS
@@ -90,4 +109,5 @@ Pedro Villaroman
  * Isomorphic Application
    * Provided assistance as necessary to Dennis
    * Export and Import Isomorphic integration
+
 
