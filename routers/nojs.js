@@ -5,6 +5,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var LocalStrategy = require('passport-local').Strategy;
 var open = require('open');
+var fs = require('fs');
 
 var Model = require('../model');
 
@@ -254,7 +255,11 @@ function getCSV(req, res) {
     var csv = JSON2CSV(books);
     console.log(csv);
     // window.open("data:text/csv;charset=utf-8," + escape(csv))
-    open("data:text/csv;charset=utf-8," + escape(csv));
+    //open("data:text/csv;charset=utf-8," + escape(csv));
+    fs.writeFile('file.csv', csv, function(err) {
+      if (err) throw err;
+      console.log('file saved');
+    });
   });
 }
 

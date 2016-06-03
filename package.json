@@ -25,6 +25,8 @@
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "fs": "0.0.2",
+    "json2csv": "^3.4.2",
     "mysql": "^2.10.2",
     "nodemailer": "^2.4.1",
     "nodemailer-smtp-transport": "^2.5.0",
