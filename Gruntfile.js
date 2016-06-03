@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/css/style.min.css': ['src/css/style.css', 'src/css/sweetalert.css']
+          'dist/css/style.min.css': ['src/css/style.css', 'src/css/sweetalert.css', 'src/css/reduceBoot.css']
         }
       }
     },
