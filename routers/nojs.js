@@ -207,7 +207,7 @@ exports.export = function(req, res, next) {
 
 
 
-  res.redirect('/bookmarks');
+  //res.redirect('/bookmarks');
 };
 
 function getCSV(req, res) {
@@ -256,9 +256,10 @@ function getCSV(req, res) {
     console.log(csv);
     // window.open("data:text/csv;charset=utf-8," + escape(csv))
     //open("data:text/csv;charset=utf-8," + escape(csv));
-    fs.writeFile('file.csv', csv, function(err) {
+    fs.writeFile('mybookmarks.csv', csv, function(err) {
       if (err) throw err;
       console.log('file saved');
+      res.download('mybookmarks.csv');
     });
   });
 }
