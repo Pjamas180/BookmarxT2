@@ -54,8 +54,8 @@ Pedro Villaroman
 * **Dennis Ku**
  * Client-Side (Iteration 2)
    * Create, read, update, and delete AJAX calls to the API
-   * Rendering the templates on the client-side as a one-page application
-   * Prepared EJS templates to support Javascript
+    * Rendering the templates on the client-side as a one-page application
+    * Prepared EJS templates to support Javascript
  * Server-Side (Iteration 1)
    * Create, read, update, and delete functions for API
     * Server-side validation
