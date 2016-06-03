@@ -67,3 +67,9 @@ Pedro Villaroman
  * Compression - very simple version
  * JS/CSS management (see above)
  * General bug-fixing/provide help and resources to teammates
+* **Samantha Hahn**
+ * Client-Side
+   * Made templates responsive
+    * Styled login and signup pages
+    * Fixed HTML markup issues
+    * Fixed CSS issues
