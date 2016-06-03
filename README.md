@@ -45,7 +45,25 @@ Pedro Villaroman
 * **Code Management/Cleanup**
  * Minimum code was written to implement the functionalities of the application
  * Minimized the number of dependencies on NodeJS
-  * Having dependencies would make the task easier but can also be bloated and overkill
+   * Having dependencies would make the task easier but can also be bloated and/or overkill
 * **Security**
  * Password-hashing
 * **Login, logout, session management**
+
+## Who Worked on What (see bolded points above for more details)
+* **Dennis Ku**
+ * Client-Side (Iteration 2)
+   * Create, read, update, and delete AJAX calls to the API
+   * Rendering the templates on the client-side as a one-page application
+   * Prepared EJS templates to support Javascript
+ * Server-Side (Iteration 1)
+   * Create, read, update, and delete functions for API
+    * Server-side validation
+    * Wrote SQL queries for CRUD functions, sort, search, and tags
+    * Helped design database schema
+    * Rendered the templates on server-side
+    * Modified HTML template to support data
+ * Isomorphic Application (see above)
+ * Compression - very simple version
+ * JS/CSS management (see above)
+ * General bug-fixing/provide help and resources to teammates
